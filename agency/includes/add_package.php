@@ -2,19 +2,20 @@
     //Package Insert Query
     if(isset($_SESSION['agency_id'])){
         if(isset($_POST['create_package'])){
-            $agency_id      = $_SESSION['agency_id'];
-            $package_name   = htmlentities($_POST['package_name']);
-            $location       = htmlentities($_POST['location']);
-            $country        = htmlentities($_POST['country']);
-            $place_details  = $_POST['place_details'];
-            $num_days       = htmlentities($_POST['num_days']);
-            $num_nights     = htmlentities($_POST['num_nights']);
-            $package_price  = htmlentities($_POST['package_price']);
-            $includes       = $_POST['includes'];
-            $excludes       = $_POST['excludes'];
-            $optional       = $_POST['optional'];
-            $itinerary      = $_POST['itinerary'];
-            $created_at     = date("y.m.d");
+            $agency_id          = $_SESSION['agency_id'];
+            $package_name       = htmlentities($_POST['package_name']);
+            $location           = htmlentities($_POST['location']);
+            $country            = htmlentities($_POST['country']);
+            $place_details      = $_POST['place_details'];
+            $num_days           = htmlentities($_POST['num_days']);
+            $num_nights         = htmlentities($_POST['num_nights']);
+            $package_price      = htmlentities($_POST['package_price']);
+            $booking_percentage = htmlentities($_POST['booking_percentage']);
+            $includes           = $_POST['includes'];
+            $excludes           = $_POST['excludes'];
+            $optional           = $_POST['optional'];
+            $itinerary          = $_POST['itinerary'];
+            $created_at         = date("y.m.d");
 
             //uploading multiple image to folder
             $place_images = '';
@@ -33,28 +34,29 @@
             }
 
             //Empty Field Validation
-            if($package_name == '' || $location == '' || $country == '' || $package_price == ''){
+            if($package_name == '' || $location == '' || $country == '' || $package_price == '' || $booking_percentage == ''){
                 $_SESSION['error'] = 'Please Fill the Form';
                 header('Location: packages.php?page=add_package');
                 return;
             }else{
-                $stmt = $pdo->prepare('INSERT INTO packages(agency_id, package_name, location, country, place_details, place_images, num_days, num_nights, package_price, includes, excludes, optional, itinerary, package_status, package_date) VALUES(:agency_id, :package_name, :location, :country,:place_details, :place_images, :num_days, :num_nights, :package_price, :includes, :excludes, :optional, :itinerary, :package_status, :package_date)');
+                $stmt = $pdo->prepare('INSERT INTO packages(agency_id, package_name, location, country, place_details, place_images, num_days, num_nights, package_price, booking_percentage, includes, excludes, optional, itinerary, package_status, package_date) VALUES(:agency_id, :package_name, :location, :country,:place_details, :place_images, :num_days, :num_nights, :package_price, :booking_percentage, :includes, :excludes, :optional, :itinerary, :package_status, :package_date)');
 
-                $stmt->execute([':agency_id'      => $agency_id,
-                                ':package_name'   => $package_name,
-                                ':location'       => $location,
-                                ':country'        => $country,
-                                ':place_details'  => $place_details,
-                                ':place_images'   => $place_images,
-                                ':num_days'       => $num_days,
-                                ':num_nights'     => $num_nights,
-                                ':package_price'  => $package_price,
-                                ':includes'       => $includes,
-                                ':excludes'       => $excludes,
-                                ':optional'       => $optional,
-                                ':itinerary'      => $itinerary,
-                                ':package_status' => 'available',
-                                ':package_date'   => $created_at]);
+                $stmt->execute([':agency_id'            => $agency_id,
+                                ':package_name'         => $package_name,
+                                ':location'             => $location,
+                                ':country'              => $country,
+                                ':place_details'        => $place_details,
+                                ':place_images'         => $place_images,
+                                ':num_days'             => $num_days,
+                                ':num_nights'           => $num_nights,
+                                ':package_price'        => $package_price,
+                                ':booking_percentage'   => $booking_percentage,
+                                ':includes'             => $includes,
+                                ':excludes'             => $excludes,
+                                ':optional'             => $optional,
+                                ':itinerary'            => $itinerary,
+                                ':package_status'       => 'available',
+                                ':package_date'         => $created_at]);
                 $_SESSION['success'] = 'New Package Added';
                 header('Location: packages.php');
                 return;
@@ -106,6 +108,10 @@
         <div class="form-group p-2">
             <label for="package_price">Price(Per Person)</label>
             <input type="number" class="form-control" id="" name="package_price">
+        </div>
+        <div class="form-group p-2">
+            <label for="booking_percentage">Booking Price(%)</label>
+            <input type="number" class="form-control" id="" name="booking_percentage">
         </div>
         <div class="form-group p-2">
             <label for="includes">Includes</label>

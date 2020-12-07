@@ -34,6 +34,9 @@
                 <a class="nav-link py-3" href="bookings.php">
                     Booking List
                 </a>
+                <a class="nav-link py-3" href="payments.php">
+                    Payment List
+                </a>
                 <a class="nav-link py-3" href="reviews.php">
                     Agency Reviews
                 </a>

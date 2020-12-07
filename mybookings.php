@@ -72,7 +72,9 @@
                 <th>Persons</th>
                 <th>Booking Date</th>
                 <th>Total Price</th>
-                <th>Payment</th>
+                <th>Booking Price</th>
+                <th>Payment status</th>
+                <th>Tour Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -99,14 +101,32 @@
                     echo '<td>'. $booking['check_in'] .'</td>';
                     echo '<td>'. $booking['persons'] .'</td>';
                     echo '<td>'. $booking['date'] .'</td>';
-                    echo '<td>'. $package['package_price']*$booking['persons'] .'</td>';
 
-                    if($booking['booking_status'] == 'confirm'){
+                    $total = $package['package_price'] * $booking['persons'];
+                    echo '<td>'. $total .'</td>';
+
+                    $book =  ceil(($package['booking_percentage'] / 100) * $total);
+                    echo '<td>'. $book .'</td>';
+
+                    //Reading Payment data
+                    $stmt = $pdo->prepare('SELECT * FROM payments WHERE booking_id = :booking_id');
+                    $stmt->execute([':booking_id' => $booking['booking_id']]);
+                    $payemnt = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if($booking['booking_status'] == 'confirm' && empty($payemnt)){
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary">Pay</a></td>';
+                    }elseif($booking['booking_status'] == 'confirm' && !empty($payemnt)){
+                        // echo '<td><a href="#" class="btn btn-primary" id="payment_id" data-toggle="modal" data-target="#exampleModal">Paid</a></td>';
+                        echo '<td class="font-weight-bold">Paid</td>';
                     }else {
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary disabled">Pay</a></td>';
                     }
 
+                    if(!empty($payemnt)){
+                        echo '<td>'. ucwords($payemnt['tour_status']) .'</td>';
+                    }else{
+                        echo '<td></td>';
+                    }
                     if($booking['booking_status'] == 'pending'){
                         echo '<td><a  href="booking.php?page=edit_booking&edit='. $booking['booking_id'] .'" class="btn btn-warning mt-1 mr-1"><i class="fas fa-edit"></i></a>';
                         echo '<a href="mybookings.php?delete='. $booking['booking_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';

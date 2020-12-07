@@ -66,6 +66,8 @@
                 <th>Package Name</th>
                 <th>Location</th>
                 <th>Country</th>
+                <th>Price</th>
+                <th>Booking price(%)</th>
                 <th>Status</th>
                 <th>Comments</th>
                 <th>Created at</th>
@@ -95,6 +97,8 @@
                             echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
                             echo '<td>'. $package['location'] .'</td>';
                             echo '<td>'. $package['country'] .'</td>';
+                            echo '<td>'. $package['package_price'] .'</td>';
+                            echo '<td>'. $package['booking_percentage'] .'%</td>';
                             echo '<td>'. ucwords($package['package_status']) .'</td>';
                             echo '<td>8</td>';
                             echo '<td>'. $package['package_date'] .'</td>';

@@ -12,7 +12,7 @@
             header('Location: index.php');
             return;
         }
-        $stmt = $pdo->prepare('SELECT * FROM packages WHERE agency_id = :agency_id AND (location LIKE :search OR country LIKE :search) AND package_status = :package_status');
+        $stmt = $pdo->prepare('SELECT * FROM packages WHERE agency_id = :agency_id AND (location LIKE :search OR country LIKE :search OR place_details LIKE :search OR num_days LIKE :search OR num_nights LIKE :search OR package_price LIKE :search) AND package_status = :package_status');
         $stmt->execute([':agency_id'        => $agency_id,
                         ':search'           => "%". $search ."%",
                         ':package_status'   => 'available']);

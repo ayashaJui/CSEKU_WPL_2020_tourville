@@ -166,7 +166,8 @@
                 </div>
                 <hr>
                 <div class="">
-                    <p class="font-weight-bold font-italic"><span class="ml-2">Price:</span> BDT <?php echo $package['package_price']; ?>/-<span class="ml-2">per person</span></p> 
+                    <p class="font-weight-bold font-italic"><span class="ml-2">Price:</span> BDT <?php echo $package['package_price']; ?>/-<span class="ml-2">per person</span></p>
+                    <p class="font-weight-bold font-italic"><span class="mx-2">Booking Price:</span><?php echo $package['booking_percentage']; ?>%<span class="ml-2">of total price</span></p> 
                 </div>
             </div>
         </div>
