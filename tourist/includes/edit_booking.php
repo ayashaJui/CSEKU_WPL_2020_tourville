@@ -15,22 +15,16 @@
     if(isset($_SESSION['tourist_email'])){
         if(isset($_GET['edit'])){
             if(isset($_POST['update_book'])){
-                $tourist_id = $_SESSION['tourist_id'];
-                $booking_id = $_GET['edit'];
-                $check_in   = $_POST['check_in'];
-                $persons    = $_POST['persons'];
-                $firstname  = htmlentities($_POST['tourist_firstname']);
-                $lastname   = htmlentities($_POST['tourist_lastname']);
-                $email      = htmlentities($_POST['tourist_email']);
-                $contact    = htmlentities($_POST['tourist_contact']);
-                $message    = $_POST['enquiry_message'];
-                $date       = date("y.m.d");
-
-                // $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                // $stmt->execute([':package_id' => $package_id]);
-                // $package = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                //$total_price = $package['package_price']*persons;
+                $tourist_id     = $_SESSION['tourist_id'];
+                $booking_id     = $_GET['edit'];
+                $travel_style   = $_POST['travel_style'];
+                $persons        = $_POST['persons'];
+                $firstname      = htmlentities($_POST['tourist_firstname']);
+                $lastname       = htmlentities($_POST['tourist_lastname']);
+                $email          = htmlentities($_POST['tourist_email']);
+                $contact        = htmlentities($_POST['tourist_contact']);
+                $message        = $_POST['enquiry_message'];
+                $date           = date("y.m.d");
 
                 //contact no validation
                 $tourist_contact = '';
@@ -45,19 +39,19 @@
                     }
                 }
 
-                if($check_in == '' || $persons == '' || $firstname == '' || $lastname == '' || $email == ''){
+                if($travel_style == '' || $persons == '' || $firstname == '' || $lastname == '' || $email == ''){
                     $_SESSION['error'] = 'Please Fill the Form';
                     header('Location: booking.php?page=edit_booking&edit='. $booking_id);
                     return;
                 }else {
-                    $stmt = $pdo->prepare('UPDATE bookings SET package_id = :package_id, tourist_id = :tourist_id, agency_id = :agency_id, persons = :persons, check_in = :check_in, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_contact = :tourist_contact, enquiry_msg = :enquiry_msg, booking_status = :booking_status, date = :date WHERE booking_id = :booking_id');
+                    $stmt = $pdo->prepare('UPDATE bookings SET package_id = :package_id, tourist_id = :tourist_id, agency_id = :agency_id, persons = :persons, travel_style = :travel_style, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_contact = :tourist_contact, enquiry_msg = :enquiry_msg, booking_status = :booking_status, date = :date WHERE booking_id = :booking_id');
 
                     $stmt->execute([':booking_id'           => $booking_id,
                                     ':package_id'           => $package_id,
                                     ':tourist_id'           => $tourist_id,
                                     ':agency_id'            => $agency_id,
                                     ':persons'              => $persons,
-                                    ':check_in'             => $check_in,
+                                    ':travel_style'         => $travel_style,
                                     ':tourist_firstname'    => $firstname,
                                     ':tourist_lastname'     => $lastname,
                                     ':tourist_email'        => $email,
@@ -82,20 +76,50 @@
         <div class="col-sm-8">
             
             <?php
-                include 'includes/flash_msg.php'
+                include 'includes/flash_msg.php';
+
+                $package_id = $booking['package_id'];
+
+                $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
+                $stmt->execute([':package_id' => $package_id]);
+                $package = $stmt->fetch(PDO::FETCH_ASSOC)
             ?>
 
             <form action="" method="post">
                 <div class="my-5 pb-3">
                     <h2 class="p-2">Please Fill this Form</h2>
                     <div class="form-group p-2">
-                        <label for="check_in">Check In</label>
-                        <input type="date" name="check_in" value="<?php echo $booking['check_in']; ?>" id="" class="form-control">
-                    </div>
-                    <div class="form-group p-2">
                         <label for="person">Persons</label>
                         <input type="number" name="persons" value="<?php echo $booking['persons']; ?>" id="" class="form-control">
                     </div>
+                    <div class="form-group p-2">
+                    <label for="travel_style">Travel Style</label>
+                    <select name="travel_style" id="" class="custom-select">
+                        <option value="<?php echo $booking['travel_style']; ?>"><?php echo ucwords($booking['travel_style']); ?> - 
+                            <?php 
+                                if($booking['travel_style'] == 'budget'){
+                                    echo ucwords($package['budget_details']); 
+                                }elseif($booking['travel_style'] == 'comfortable'){
+                                    echo ucwords($package['comfort_details']); 
+                                }else{
+                                    echo ucwords($package['lux_details']); 
+                                }
+                            ?>
+                        </option>
+                        <?php
+                            if($booking['travel_style'] == 'budget'){
+                                echo '<option value="comfortable">Comfortable - '. ucwords($package['comfort_details']) .'</option>';
+                                echo '<option value="luxury">Luxury - '. ucwords($package['lux_details']) .'</option>';
+                            }elseif($booking['travel_style'] == 'comfortable'){
+                                echo '<option value="budget">Budget - '. ucwords($package['budget_details']) .'</option>';
+                                echo '<option value="luxury">Luxury - '. ucwords($package['lux_details']) .'</option>';
+                            }else{
+                                echo '<option value="budget">Budget - '. ucwords($package['budget_details']) .'</option>';
+                                echo '<option value="comfortable">Comfortable - '. ucwords($package['comfort_details']) .'</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
                 </div>
                 <hr>
                 <div class="my-5 pt-2">
@@ -128,15 +152,6 @@
                 </div>
             </form>
         </div>
-
-        <?php
-            $package_id = $booking['package_id'];
-
-            $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-            $stmt->execute([':package_id' => $package_id]);
-            $package = $stmt->fetch(PDO::FETCH_ASSOC)
-            
-        ?>
 
         <div class="col-sm-4">
             <div class="card mt-5">
@@ -178,8 +193,22 @@
                     </div>
                     <hr>
                     <div class="">
-                        <p class="font-weight-bold font-italic"><span class="ml-2">Price:</span> BDT <?php echo $package['package_price']; ?>/-<span class="ml-2">per person</span></p> 
-                        <p class="font-weight-bold font-italic"><span class="mx-2">Booking Price:</span><?php echo $package['booking_percentage']; ?>%<span class="ml-2">of total price</span></p> 
+                        <p class="font-weight-bold font-italic ml-2">Price (Per Person):</p>
+                        <p class="font-italic" style="font-weight: 600;">
+                            <span class="ml-3">Budget:</span> BDT <?php echo $package['budget_price']; ?>/-
+                        </p>
+                        <p class="font-italic" style="font-weight: 600;">
+                            <span class="ml-3">Comfortable:</span> BDT <?php echo $package['comfort_price']; ?>/-
+                        </p>
+                        <p class="font-italic" style="font-weight: 600;">
+                            <span class="ml-3">Luxury:</span> BDT <?php echo $package['lux_price']; ?>/-
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="">
+                        <p class="font-weight-bold font-italic">
+                            <span class="mx-2">Booking Price:</span><?php echo $package['booking_percentage']; ?>%<span class="ml-2">of total price</span>
+                        </p> 
                     </div>
                 </div>
             </div>

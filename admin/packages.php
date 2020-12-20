@@ -56,39 +56,35 @@
                                 foreach($packages as $package){
                                     if($package['package_status'] == 'unavailable'){
                                         echo '<tr class="table-warning">';
-                                            echo '<td>'. $package['package_id'] .'</td>';
-                                            echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
-
-                                            $agency_id = $package['agency_id'];
-                                            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-                                            $stmt->execute([':agency_id' => $agency_id]);
-                                            $agency = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                            echo '<td><a href="../agency.php?agency_id='. $package['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
-                                            echo '<td>'. $package['location'] .'</td>';
-                                            echo '<td>'. $package['country'] .'</td>';
-                                            echo '<td>'. ucwords($package['package_status']) .'</td>';
-                                            echo '<td>2</td>';
-                                            echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-danger mt-1">Delete</a></td>';
-                                        echo '</tr>';
                                     }else {
                                         echo '<tr>';
-                                            echo '<td>'. $package['package_id'] .'</td>';
-                                            echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
-
-                                            $agency_id = $package['agency_id'];
-                                            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-                                            $stmt->execute([':agency_id' => $agency_id]);
-                                            $agency = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                            echo '<td><a href="../agency.php?agency_id='. $package['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
-                                            echo '<td>'. $package['location'] .'</td>';
-                                            echo '<td>'. $package['country'] .'</td>';
-                                            echo '<td>'. ucwords($package['package_status']) .'</td>';
-                                            echo '<td>2</td>';
-                                            echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-outline-danger mt-1">Delete</a></td>';
-                                        echo '</tr>';
                                     }
+                                        echo '<td>'. $package['package_id'] .'</td>';
+                                        echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
+
+                                        $agency_id = $package['agency_id'];
+                                        $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
+                                        $stmt->execute([':agency_id' => $agency_id]);
+                                        $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                        echo '<td><a href="../agency.php?agency_id='. $package['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
+                                        echo '<td>'. $package['location'] .'</td>';
+                                        echo '<td>'. $package['country'] .'</td>';
+                                        echo '<td>'. ucwords($package['package_status']) .'</td>';
+
+                                        //Counting Package Comment
+                                        $stmt = $pdo->prepare('SELECT count(*) FROM comments WHERE package_id = :package_id AND comment_status = :comment_status');
+                                        $stmt->execute([':package_id'       => $package['package_id'],
+                                                        ':comment_status'   => 'published']);
+                                        $comment_count = $stmt->fetchColumn();
+                                        echo '<td>'. $comment_count .'</td>';
+
+                                    if($package['package_status'] == 'unavailable'){
+                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-danger mt-1">Delete</a></td>';
+                                    }else{
+                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-outline-danger mt-1">Delete</a></td>';
+                                    }
+                                    echo '</tr>';
                                 }
                             ?>
                             </tbody>

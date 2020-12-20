@@ -19,8 +19,14 @@
                 $place_details      = $_POST['place_details'];
                 $num_days           = htmlentities($_POST['num_days']);
                 $num_nights         = htmlentities($_POST['num_nights']);
-                $package_price      = htmlentities($_POST['package_price']);
+                $budget_price       = htmlentities($_POST['budget_price']);
+                $comfort_price      = htmlentities($_POST['comfort_price']);
+                $lux_price          = htmlentities($_POST['lux_price']);
+                $budget_details     = htmlentities($_POST['budget_details']);
+                $comfort_details    = htmlentities($_POST['comfort_details']);
+                $lux_details        = htmlentities($_POST['lux_details']);
                 $booking_percentage = htmlentities($_POST['booking_percentage']);
+                $min_people         = htmlentities($_POST['min_people']);
                 $includes           = $_POST['includes'];
                 $excludes           = $_POST['excludes'];
                 $optional           = $_POST['optional'];
@@ -48,12 +54,12 @@
                 }
 
                 //Empty Field Validation
-                if($package_name == '' || $location == '' || $country == '' || $package_price == '' || $booking_percentage == ''){
+                if($package_name == '' || $location == '' || $country == '' || $budget_price == '' || $booking_percentage == ''){
                     $_SESSION['error'] = 'Please Fill the Form';
                     header('Location: packages.php?page=edit_package&edit='. $package_id);
                     return;
                 }else{
-                    $stmt = $pdo->prepare('UPDATE packages SET agency_id = :agency_id, package_name = :package_name, location = :location, country = :country, place_details = :place_details, place_images = :place_images, num_days = :num_days, num_nights = :num_nights, package_price = :package_price, booking_percentage = :booking_percentage, includes = :includes, excludes = :excludes, optional = :optional, itinerary = :itinerary, package_status = :package_status, package_date = :package_date WHERE package_id = :package_id');
+                    $stmt = $pdo->prepare('UPDATE packages SET agency_id = :agency_id, package_name = :package_name, location = :location, country = :country, place_details = :place_details, place_images = :place_images, num_days = :num_days, num_nights = :num_nights, budget_price = :budget_price, comfort_price = :comfort_price, lux_price = :lux_price, budget_details = :budget_details, comfort_details = :comfort_details, lux_details = :lux_details, booking_percentage = :booking_percentage, min_people = :min_people, includes = :includes, excludes = :excludes, optional = :optional, itinerary = :itinerary, package_status = :package_status, package_date = :package_date WHERE package_id = :package_id');
 
                     $stmt->execute([':package_id'           => $package_id,
                                     ':agency_id'            => $agency_id,
@@ -64,13 +70,19 @@
                                     ':place_images'         => $place_images,
                                     ':num_days'             => $num_days,
                                     ':num_nights'           => $num_nights,
-                                    ':package_price'        => $package_price,
+                                    ':budget_price'         => $budget_price,
+                                    ':comfort_price'        => $comfort_price,
+                                    ':lux_price'            => $lux_price,
+                                    ':budget_details'       => $budget_details,
+                                    ':comfort_details'      => $comfort_details,
+                                    ':lux_details'          => $lux_details,
                                     ':booking_percentage'   => $booking_percentage,
+                                    ':min_people'           => $min_people,
                                     ':includes'             => $includes,
                                     ':excludes'             => $excludes,
                                     ':optional'             => $optional,
                                     ':itinerary'            => $itinerary,
-                                    ':package_status'       => $package_status,
+                                    ':package_status'       => 'available',
                                     ':package_date'         => $package_date]);
                     $_SESSION['success'] = 'Package Info Updated';
                     header('Location: packages.php');
@@ -127,7 +139,6 @@
                 echo '<img src="../images/packages/'. $place_img .'" width="150" height="120" class="mr-2" alt="'. $package['location'] .'">';
         }
         ?>
-            <!-- <img src="../images/packages/astronomy-beautiful-clouds-constellation-355465.jpg" width="150" height="120" alt="sajeck"> -->
             <br><br>
             <input type="file" name="place_images[]" multiple >
         </div>
@@ -140,12 +151,24 @@
             <input type="number" class="form-control" value="<?php echo $package['num_nights']; ?>" id="" name="num_nights">
         </div>
         <div class="form-group p-2">
+            <label for="package_details">Travel Style</label>
+            <input type="text" class="form-control" value="<?php echo $package['budget_details']; ?>" id="" name="budget_details" placeholder="Budget"><br>
+            <input type="text" class="form-control" value="<?php echo $package['comfort_details']; ?>" id="" name="comfort_details" placeholder="Comfortable"><br>
+            <input type="text" class="form-control" value="<?php echo $package['lux_details']; ?>" id="" name="lux_details" placeholder="Luxury">
+        </div>
+        <div class="form-group p-2">
             <label for="package_price">Price(Per Person)</label>
-            <input type="number" class="form-control" value="<?php echo $package['package_price']; ?>" id="" name="package_price">
+            <input type="number" class="form-control" value="<?php echo $package['budget_price']; ?>" id="" name="budget_price" placeholder="Budget"><br>
+            <input type="number" class="form-control" value="<?php echo $package['comfort_price']; ?>" id="" name="comfort_price" placeholder="Comfortable"><br>
+            <input type="number" class="form-control" value="<?php echo $package['lux_price']; ?>" id="" name="lux_price" placeholder="Luxury">
         </div>
         <div class="form-group p-2">
             <label for="booking_percentage">Booking Price(%)</label>
             <input type="number" class="form-control" value="<?php echo $package['booking_percentage']; ?>" id="" name="booking_percentage">
+        </div>
+        <div class="form-group p-2">
+            <label for="min_people">Minumum People required to start</label>
+            <input type="number" class="form-control" value="<?php echo $package['min_people']; ?>"  id="" name="min_people">
         </div>
         <div class="form-group p-2">
             <label for="includes">Includes</label>

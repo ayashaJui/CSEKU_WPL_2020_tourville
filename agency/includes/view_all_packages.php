@@ -65,9 +65,11 @@
                 <th>ID</th>
                 <th>Package Name</th>
                 <th>Location</th>
-                <th>Country</th>
+                <!-- <th>Country</th> -->
                 <th>Price</th>
                 <th>Booking price(%)</th>
+                <th>Minimum Booking</th>
+                <th>Already Booked</th>
                 <th>Status</th>
                 <th>Comments</th>
                 <th>Created at</th>
@@ -96,11 +98,35 @@
                             echo '<td>'. $package['package_id'] .'</td>';
                             echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
                             echo '<td>'. $package['location'] .'</td>';
-                            echo '<td>'. $package['country'] .'</td>';
-                            echo '<td>'. $package['package_price'] .'</td>';
+                            // echo '<td>'. $package['country'] .'</td>';
+                            echo '<td>'. $package['budget_price'] .'(Budget)<br>
+                                    '. $package['comfort_price'] .'(Comfortable)<br>
+                                    '. $package['lux_price'] .'(Luxury)</td>';
                             echo '<td>'. $package['booking_percentage'] .'%</td>';
+                            echo '<td>'. $package['min_people'] .'</td>';
+
+                            //Counting Already booked packages
+                            $stmt = $pdo->prepare('SELECT * FROM bookings WHERE package_id = :package_id AND booking_status = :booking_status');
+                            $stmt->execute([':package_id'       => $package['package_id'],
+                                            ':booking_status'   => 'confirm']);
+                            $books = [];
+                            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                                $books[] = $row['persons'];
+                            }
+                            $size = sizeof($books);
+                            $book_person = 0;
+                            for($i=0; $i<$size; $i++){
+                                $book_person += $books[$i];
+                            }
+                            echo '<td>'. $book_person .'</td>';
                             echo '<td>'. ucwords($package['package_status']) .'</td>';
-                            echo '<td>8</td>';
+
+                            //Counting Package Comment
+                            $stmt = $pdo->prepare('SELECT count(*) FROM comments WHERE package_id = :package_id AND comment_status = :comment_status');
+                            $stmt->execute([':package_id'       => $package['package_id'],
+                                            ':comment_status'   => 'published']);
+                            $comment_count = $stmt->fetchColumn();
+                            echo '<td>'. $comment_count .'</td>';
                             echo '<td>'. $package['package_date'] .'</td>';
 
                         if($package['package_status'] == 'unavailable'){

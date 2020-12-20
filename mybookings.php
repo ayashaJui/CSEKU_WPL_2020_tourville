@@ -68,7 +68,7 @@
                 <th>Package Name</th>
                 <th>Agency Name</th>
                 <th>Booking Status</th>
-                <th>Check In</th>
+                <th>Travel Style</th>
                 <th>Persons</th>
                 <th>Booking Date</th>
                 <th>Total Price</th>
@@ -81,7 +81,18 @@
         <tbody>
         <?php 
             foreach($bookings as $booking){
-                echo '<tr>';
+                //Reading Payment data
+                $stmt = $pdo->prepare('SELECT * FROM payments WHERE booking_id = :booking_id');
+                $stmt->execute([':booking_id' => $booking['booking_id']]);
+                $payment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if(!empty($payment) && $payment['tour_status'] == 'travelling'){
+                    echo '<tr class="table table-info">';
+                }elseif(!empty($payment) && $payment['tour_status'] == 'completed'){
+                    echo '<tr class="table table-danger">';
+                }else{
+                    
+                }
                     echo '<td>'. $booking['booking_id'] .'</td>';
 
                     //Package Name Reading From packages Table
@@ -98,32 +109,35 @@
 
                     echo '<td><a href="agency.php?agency_id='. $package['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
                     echo '<td>'. ucwords($booking['booking_status']) .'</td>';
-                    echo '<td>'. $booking['check_in'] .'</td>';
+                    echo '<td>'. ucwords($booking['travel_style']) .'</td>';
                     echo '<td>'. $booking['persons'] .'</td>';
                     echo '<td>'. $booking['date'] .'</td>';
 
-                    $total = $package['package_price'] * $booking['persons'];
+                    if($booking['travel_style'] == 'luxury'){
+                        $total = $package['lux_price'] * $booking['persons'];
+                        $book =  ceil(($package['booking_percentage'] / 100) * $total);
+                    }elseif($booking['travel_style'] == 'comfortable'){
+                        $total = $package['comfort_price'] * $booking['persons'];
+                        $book =  ceil(($package['booking_percentage'] / 100) * $total);
+                    }else{
+                        $total = $package['budget_price'] * $booking['persons'];
+                        $book =  ceil(($package['booking_percentage'] / 100) * $total);
+                    }
                     echo '<td>'. $total .'</td>';
-
-                    $book =  ceil(($package['booking_percentage'] / 100) * $total);
                     echo '<td>'. $book .'</td>';
 
-                    //Reading Payment data
-                    $stmt = $pdo->prepare('SELECT * FROM payments WHERE booking_id = :booking_id');
-                    $stmt->execute([':booking_id' => $booking['booking_id']]);
-                    $payemnt = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    if($booking['booking_status'] == 'confirm' && empty($payemnt)){
+                    if($booking['booking_status'] == 'confirm' && empty($payment)){
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary">Pay</a></td>';
-                    }elseif($booking['booking_status'] == 'confirm' && !empty($payemnt)){
+                    }elseif($booking['booking_status'] == 'confirm' && !empty($payment)){
                         // echo '<td><a href="#" class="btn btn-primary" id="payment_id" data-toggle="modal" data-target="#exampleModal">Paid</a></td>';
                         echo '<td class="font-weight-bold">Paid</td>';
                     }else {
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary disabled">Pay</a></td>';
                     }
 
-                    if(!empty($payemnt)){
-                        echo '<td>'. ucwords($payemnt['tour_status']) .'</td>';
+                    if(!empty($payment)){
+                        echo '<td>'. ucwords($payment['tour_status']) .'</td>';
                     }else{
                         echo '<td></td>';
                     }

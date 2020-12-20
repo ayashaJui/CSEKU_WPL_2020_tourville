@@ -117,7 +117,7 @@
                     echo '<p class="card-text mb-3" style="font-size: .7rem;">'. substr($package['place_details'], 0, 50) .'...</p><hr>';
                     echo '<div>';
                         echo '<p class="text-muted">
-                                <h5>BDT '. $package['package_price'] .'/-</h5>
+                                <h5>BDT '. $package['budget_price'] .'/-</h5>
                                 <a href="package.php?package_id='. $package['package_id'] .'" class="btn btn-primary float-right" style="position: relative; top: -30px;font-size: .8rem;">View<span class=" ml-2"><i class="fas fa-angle-right"></i></span></a>
                             </p>';
                     echo '</div>';

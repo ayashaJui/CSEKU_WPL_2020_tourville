@@ -101,11 +101,9 @@
                                     <th>Email</th>
                                     <th>Contact</th>
                                     <th>Package Name</th>
-                                    <th>Check In</th>
+                                    <th>Travel Style</th>
                                     <th>Persons</th>
                                     <th>Total Price</th>
-                                    <!-- <th>Payment Method</th>
-                                    <th>Payment Type</th> -->
                                     <th>Booking Status</th>
                                     <th>Date</th>
                                     <th>Confirm</th>
@@ -136,9 +134,17 @@
 
                                             echo '<td><a href="../package.php?package_id='. $booking['package_id'] .'">'. $package['package_name'] .'</a></td>';
 
-                                            echo '<td>'. $booking['check_in'] .'</td>';
+                                            echo '<td>'. ucwords($booking['travel_style']) .'</td>';
                                             echo '<td>'. $booking['persons'] .'</td>';
-                                            echo '<td>'. $package['package_price']*$booking['persons'].'</td>';
+
+                                            if($booking['travel_style'] == 'luxury'){
+                                                $total = $package['lux_price'] * $booking['persons'];
+                                            }elseif($booking['travel_style'] == 'comfortable'){
+                                                $total = $package['comfort_price'] * $booking['persons'];
+                                            }else{
+                                                $total = $package['budget_price'] * $booking['persons'];
+                                            }
+                                            echo '<td>'. $total .'</td>';
                                             echo '<td>'. ucwords($booking['booking_status']) .'</td>';
                                             echo '<td>'. $booking['date'] .'</td>';
 

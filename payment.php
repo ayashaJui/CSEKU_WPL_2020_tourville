@@ -18,9 +18,23 @@
 
         $tourist_id     = $booking['tourist_id'];
         $agency_id      = $booking['agency_id'];
-        $total  = $package['package_price'] * $booking['persons'];
-        $half   = $total / 2;
-        $book   = ceil(($package['booking_percentage'] / 100) * $total);
+
+        // $total = '';
+        // $half = '';
+        // $book = '';
+        if($booking['travel_style'] == 'luxury'){
+            $total  = $package['lux_price'] * $booking['persons'];
+            $half   = $total / 2;
+            $book   = ceil(($package['booking_percentage'] / 100) * $total);
+        }elseif($booking['travel_style'] == 'comfortable'){
+            $total  = $package['comfort_price'] * $booking['persons'];
+            $half   = $total / 2;
+            $book   = ceil(($package['booking_percentage'] / 100) * $total);
+        }else{
+            $total  = $package['budget_price'] * $booking['persons'];
+            $half   = $total / 2;
+            $book   = ceil(($package['booking_percentage'] / 100) * $total);
+        }
 
         if(isset($_POST['pay'])){
             $payment_status = $_POST['payment'];
@@ -120,11 +134,11 @@
                     </div>
                     <div class="form-group p-2">
                         <input type="radio" name="payment" id="" value="book_price" checked>
-                        <label for="book_price">Booking Price: <?php echo $book; ?>/-</label><br>
+                        <label for="book_price">Booking Price: <span class="ml-2"><?php echo $book; ?>/-</span></label><br>
                         <input type="radio" name="payment" id="" value="half">
-                        <label for="half">Half Payment: <?php echo $half; ?>/-</label><br>
+                        <label for="half">Half Payment: <span class="ml-2"><?php echo $half; ?>/-</span></label><br>
                         <input type="radio" name="payment" id="" value="full">
-                        <label for="full">Full Payment: <?php echo $total; ?>/-</label><br>
+                        <label for="full">Full Payment: <span class="ml-2"><?php echo $total; ?>/-</span></label><br>
                     </div>
                     <div class="form-group p-2">
                         <input type="submit" value="Pay" name="pay" class="btn btn-primary">
@@ -134,16 +148,6 @@
                 </div>
             </form>
         </div>
-
-        <?php
-            if(isset($_GET['booking_id'])){
-                $booking_id = $_GET['booking_id'];
-
-                $stmt = $pdo->prepare('SELECT * FROM bookings WHERE booking_id = :booking_id');
-                $stmt->execute([':booking_id' => $booking_id]);
-                $booking = $stmt->fetch(PDO::FETCH_ASSOC);
-            }
-        ?>
 
         <div class="col-sm-4">
             <div class="card mt-5">
@@ -172,19 +176,37 @@
                     </div>
                     <hr>
                     <div class="py-2">
-                        Check in Date: <br>
-                        <?php echo $booking['check_in']; ?>
+                        Travel Style: <br>
+                        <?php echo ucwords($booking['travel_style']); ?> - 
+                        <?php
+                            if($booking['travel_style'] == 'budget'){
+                                echo ucwords($package['budget_details']); 
+                            }elseif($booking['travel_style'] == 'comfortable'){
+                                echo ucwords($package['comfort_details']); 
+                            }else{
+                                echo ucwords($package['lux_details']); 
+                            }
+                            
+                        ?>
                     </div>
                     <div class="py-2">
                         Persons: <br>
                         <?php echo $booking['persons']; ?>
                     </div>
                     <hr>
-                    <?php
-                        $total = $package['package_price'] * $booking['persons'];
-                        $book =  ceil(($package['booking_percentage'] / 100) * $total);
-                    ?>
                     <div class="">
+                        <p class="font-weight-bold font-italic"><span class="ml-2">Price:</span> BDT 
+                        <?php
+                            if($booking['travel_style'] == 'luxury'){
+                                echo $package['lux_price']; 
+                            }elseif($booking['travel_style'] == 'comfortable'){
+                                echo $package['comfort_price']; 
+                            }else{
+                                echo ucwords($package['budget_price']); 
+                            }
+                            
+                        ?>/- 
+                        <span class="ml-2">per person</span>
                         <p class="font-weight-bold font-italic"><span class="ml-2">Total Price:</span> BDT <?php echo $total; ?>/-
                         <p class="font-weight-bold font-italic text-danger"><span class="mx-2">Booking Price:</span>BDT <?php echo $book; ?>/-</p>
                     </div>

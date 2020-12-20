@@ -118,14 +118,14 @@
                                     <span class="fa fa-star star-inactive"></span>
                                 </p>
                             </div>';
-                         echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
+                        echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
                         echo '<div class="" style="font-size: .85rem;">
                                 <p class="text-muted pt-2"><span class="mr-1" ><i class="far fa-clock"></i></span>'. $package['num_days'] .' days '. $package['num_nights'] .' nights</p>';
                     echo '</div></div>';
                     echo '<p class="card-text mb-3" style="font-size: .7rem;">'. substr($package['place_details'], 0, 40) .'...</p><hr>';
                     echo '<div>';
                         echo '<p class="text-muted" >
-                                <h5>BDT '. $package['package_price'] .' /-</h5>
+                                <h5>BDT '. $package['budget_price'] .' /-</h5>
                                 <a href="package.php?package_id='. $package['package_id'] .'" class="btn btn-primary float-right" style="position: relative; top: -30px; font-size: .8rem;">View<span class=" ml-2"><i class="fas fa-angle-right"></i></span></a>
                             </p>';
                     echo '</div>';

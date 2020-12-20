@@ -77,12 +77,37 @@
     </div>
     <div class="alert alert-warning mt-5 text-dark" role="alert">
         <p><span class="mr-1"><i class="far fa-clock"></i></span>
-           Duration:  <?php echo $package['num_days']; ?> days <?php echo $package['num_nights']; ?> nights
+            Duration:  <span class="mx-1" style="font-weight: 600;"><?php echo $package['num_days']; ?></span> days <span class="mx-1" style="font-weight: 600;"><?php echo $package['num_nights']; ?></span> nights
+        </p>
+    </div>
+    <div class="alert alert-secondary mt-5 text-dark" role="alert">
+        <p><span class="mr-1"><i class="fas fa-users"></i></span>
+            Minimum  <span class="mx-1" style="font-weight: 600;"><?php echo $package['min_people']; ?></span> Persons Required.
+
+            <?php
+                $package_id = $package['package_id'];
+                $stmt = $pdo->prepare('SELECT * FROM bookings WHERE package_id = :package_id AND booking_status = :booking_status');
+                $stmt->execute([':package_id'       => $package_id,
+                                ':booking_status'   => 'confirm']);
+
+                $books = [];
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $books[] = $row['persons'];
+                }
+                $size = sizeof($books);
+
+                $book_person = 0;
+                for($i=0; $i<$size; $i++){
+                    $book_person += $books[$i];
+                }
+            ?>
+
+            Already Booked by <span class="mx-1" style="font-weight: 600;"><?php echo $book_person; ?></span> persons.
         </p>
     </div>
     <div class="mt-5">
         <p>Starting from
-            <h5>BDT <?php echo $package['package_price']; ?>/-<span class="ml-3">per person</span></h5>
+            <h5>BDT <?php echo $package['budget_price']; ?>/-<span class="ml-3">per person</span></h5>
         </p>
         <?php
             if(isset($_SESSION['tourist_email'])){
