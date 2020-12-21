@@ -17,6 +17,7 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="packages.php">View All Packages</a>
                         <a class="nav-link" href="packages.php?page=add_package">Add Package</a>
+                        <a href="packages.php?page=package_date" class="nav-link">Package Dates</a>
                     </nav>
                 </div>
 
@@ -24,9 +25,16 @@
                     }else {
                 ?>
 
-                <a class="nav-link py-3" href="packages.php">
+                <a class="nav-link collapsed py-3" href="#" data-toggle="collapse" data-target="#collapsePackages" aria-expanded="false" aria-controls="collapseLayouts">
                     Packages
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+                <div class="collapse" id="collapsePackages" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="packages.php">View All Packages</a>
+                        <a href="packages.php?page=package_date" class="nav-link">Package Dates</a>
+                    </nav>
+                </div>
 
                 <?php
                     }

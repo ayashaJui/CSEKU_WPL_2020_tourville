@@ -109,7 +109,7 @@
         </div>
         <div class="form-group p-2">
             <label for="date">Join Date</label>
-            <input type="date" class="form-control" id="" value="<?php echo $employee['date'] ?>" name="date">
+            <input type="date" class="form-control" id="" value="<?php echo $employee['date']; ?>" name="date">
         </div>
         <div class="form-group p-2">
             <input type="submit" value="Update Employee" name="update_employee" class="btn btn-primary">

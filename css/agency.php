@@ -83,3 +83,10 @@ td {
   border-radius: 100%;
   margin-right: 30px;
 }
+
+.stat{
+    background: #EAE8FF;
+    font-size: .9rem;
+    font-weight: 500;
+    border: 2px solid #85998A;
+}

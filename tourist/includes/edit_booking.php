@@ -57,7 +57,7 @@
                                     ':tourist_email'        => $email,
                                     ':tourist_contact'      => $tourist_contact,
                                     ':enquiry_msg'          => $message,
-                                    ':booking_status'       => $booking_status,
+                                    ':booking_status'       => 'pending',
                                     ':date'                 => $date]);
 
                     $_SESSION['success'] = "Your Request has been Submitted. PLease Wait...";

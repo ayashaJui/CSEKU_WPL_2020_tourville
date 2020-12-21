@@ -76,3 +76,12 @@
 <?php
     include 'layouts/footer.php';
 ?>
+
+<p class="float-right" style="position: relative; top: -30px;">
+    <span class="text-muted mr-3">4.0</span>
+    <span class="fa fa-star star-active"></span>
+    <span class="fa fa-star star-active"></span>
+    <span class="fa fa-star star-active"></span>
+    <span class="fa fa-star star-active"></span>
+    <span class="fa fa-star star-inactive"></span>
+</p>

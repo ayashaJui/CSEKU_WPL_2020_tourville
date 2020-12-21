@@ -45,6 +45,15 @@
                         case 'edit_package':
                             include 'includes/edit_package.php';
                         break;
+                        case 'package_date':
+                            include 'includes/package_date.php';
+                        break;
+                        case 'add_date':
+                            include 'includes/add_date.php';
+                        break;
+                        case 'update_date':
+                            include 'includes/update_date.php';
+                        break;
                         default:
                             include 'includes/view_all_packages.php';
                     break;

@@ -105,18 +105,38 @@
             Already Booked by <span class="mx-1" style="font-weight: 600;"><?php echo $book_person; ?></span> persons.
         </p>
     </div>
+    
+    <?php
+        $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
+        $stmt->execute([':package_id'   => $package['package_id']]);
+        $date = $stmt->fetch(PDO::FETCH_ASSOC);
+    ?>
     <div class="mt-5">
         <p>Starting from
             <h5>BDT <?php echo $package['budget_price']; ?>/-<span class="ml-3">per person</span></h5>
         </p>
         <?php
-            if(isset($_SESSION['tourist_email'])){
-                echo '<a href="booking.php?package_id='. $package['package_id'] .'" class="btn btn-primary mt-3">Book this tour</a>';
-            }else{
+            if(!isset($_SESSION['tourist_email']) || (!empty($date) && $date['status'] == 'booking off')){
                 echo '<a href="booking.php?package_id='. $package['package_id'] .'" class="btn btn-primary mt-3 disabled">Book this tour</a>';
+            }else{
+                echo '<a href="booking.php?package_id='. $package['package_id'] .'" class="btn btn-primary mt-3">Book this tour</a>';
             }
         ?>
     </div>
+
+    <?php
+        if(!empty($date)){
+    ?>
+    <div class="alert alert-info mt-5 text-dark" role="alert">
+        <p><span class="mr-1"><i class="far fa-calendar-alt"></i></span>
+            Last Booking Date:  <span class="mx-1" style="font-weight: 600;"><?php echo $date['last_date']; ?></span>.
+            Travel Date:  <span class="mx-1" style="font-weight: 600;"><?php echo $date['travel_date']; ?></span>
+        </p>
+    </div>
+    <?php
+        }
+    ?>
+    
     <div class="row mt-5 lead">
         <div class="col-sm-4 border-right">
             <h5 class="p-4 "><span class="border-bottom border-success">Included</span></h5>

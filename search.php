@@ -6,32 +6,29 @@
     //Package Search Query..
     if(isset($_POST['submit'])){
         $search = $_POST['search'];
-        // $search_by = $_POST['search_by'];
 
         if(empty($search)){
             header('Location: index.php');
             return;
         }
-        // $count = ' ';
-        // if($search_by == 'package'){
-            $stmt = $pdo->prepare('SELECT * FROM packages WHERE location LIKE :search OR country LIKE :search AND package_status = :package_status');
-            $stmt->execute([':search'=> "%". $search ."%",
-                            ':package_status' => 'available']);
-            $package_count = $stmt->rowCount();
-            $packages = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $packages[] = $row;
-            }
-        // }elseif($search_by == 'agency'){
-            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_address LIKE :search AND agency_status = :agency_status');
-            $stmt->execute([':search'=> "%". $search ."%",
-                            ':agency_status' => 'approved']);
-            $agency_count = $stmt->rowCount();
-            $agencies = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $agencies[] = $row;
-            }
-        // }
+
+        $stmt = $pdo->prepare('SELECT * FROM packages WHERE location LIKE :search OR country LIKE :search AND package_status = :package_status');
+        $stmt->execute([':search'=> "%". $search ."%",
+                        ':package_status' => 'available']);
+        $package_count = $stmt->rowCount();
+        $packages = [];
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $packages[] = $row;
+        }
+
+        $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_address LIKE :search AND agency_status = :agency_status');
+        $stmt->execute([':search'=> "%". $search ."%",
+                        ':agency_status' => 'approved']);
+        $agency_count = $stmt->rowCount();
+        $agencies = [];
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $agencies[] = $row;
+        }
     }
     
 
@@ -48,16 +45,23 @@
         }
 
         .star-active {
-        color: #fbc02d;
+            color: #fbc02d;
         }
 
         .star-active:hover {
-        color: #f9a825;
-        cursor: pointer;
+            color: #f9a825;
+            cursor: pointer;
         }
 
         .star-inactive {
-        color: #cfd8dc;
+            color: #cfd8dc;
+        }
+
+        .stat{
+            background: #EAE8FF;
+            font-size: .9rem;
+            font-weight: 500;
+            border: 2px solid #85998A;
         }
 
     </style>
@@ -70,18 +74,6 @@
     <p class="lead">
         <form action="search.php" method="post" class="input-group">
             <input type="text" name="search" value="<?php echo $search; ?>" id="" placeholder="Search" class="form-control col-md-4">
-            <!-- <select name="search_by" id="" class="custom-select col-sm-2 mx-1">
-                <option value="<?php echo $search_by; ?>"><?php echo $search_by; ?></option>
-
-                <?php
-                    if($search_by == 'package'){
-                        echo '<option value="agency">Agency</option>';
-                    }else{
-                        echo '<option value="package">Package</option>';
-                    }
-                ?>
-                
-            </select> -->
             <button class="btn btn-outline-success ml-2 p-2" type="submit" name="submit"><i class="fas fa-search"></i></button>
         </form>
     </p>
@@ -119,25 +111,25 @@
             echo '</div>';
             echo '<div class="col-md-8">';
                 echo '<div class="card-body pt-0">';
-                    echo '<div><div>';
-                        echo    '<h5 class="card-title">'. $package['package_name'] .'</h5>
-                                <p class="float-right" style="position: relative; top: -30px;">
-                                    <span class="text-muted mr-3">4.0</span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-inactive"></span>
-                                </p>
-                            </div>';
-                         echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
+                    echo '<div>';
+                    //read package date data
+                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
+                    $stmt->execute([':package_id'   => $package['package_id']]);
+                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        echo  '<h4 class="card-title mt-2">'. $package['package_name'] .'';
+                        if(!empty($date) && $date['status'] == 'booking off'){
+                            echo '<span class="badge rounded-pill ml-2 stat">'. ucwords($date['status']) .'</span>';
+                        }
+                        echo '</h4>';
+                        echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
                         echo '<div class="" style="font-size: .85rem;">
                                 <p class="text-muted pt-2"><span class="mr-1" ><i class="far fa-clock"></i></span>'. $package['num_days'] .' days '. $package['num_nights'] .' nights</p>';
                     echo '</div></div>';
                     echo '<p class="card-text mb-3" style="font-size: .7rem;">'. substr($package['place_details'], 0, 40) .'...</p><hr>';
                     echo '<div>';
                         echo '<p class="text-muted" >
-                                <h5>BDT '. $package['package_price'] .' /-</h5>
+                                <h5>BDT '. $package['budget_price'] .' /-</h5>
                                 <a href="package.php?package_id='. $package['package_id'] .'" class="btn btn-primary float-right" style="position: relative; top: -30px; font-size: .8rem;">View<span class=" ml-2"><i class="fas fa-angle-right"></i></span></a>
                             </p>';
                     echo '</div>';

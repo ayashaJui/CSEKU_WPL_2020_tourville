@@ -33,6 +33,9 @@
 
 <head>
     <style>
+        body{
+            
+        }
         .mybooking {
             background-image: url("images/view/mybooking.jpg");
             background-repeat: no-repeat;
@@ -50,7 +53,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 
     <?php
         include 'includes/flash_msg.php';
@@ -61,7 +64,7 @@
 
     ?>
 
-    <table class="table table-bordered table-hover mt-5">
+    <table class="table table-bordered table-hover mt-5" style="background: #F6F4F6;">
         <thead>
             <tr>
                 <th>Booking ID</th>
@@ -74,6 +77,9 @@
                 <th>Total Price</th>
                 <th>Booking Price</th>
                 <th>Payment status</th>
+                <th>Last Booking Date</th>
+                <th>Travel Date</th>
+                <th>Message From Agency</th>
                 <th>Tour Status</th>
                 <th>Action</th>
             </tr>
@@ -136,12 +142,34 @@
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary disabled">Pay</a></td>';
                     }
 
+                    //read package date data
+                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
+                    $stmt->execute([':package_id'   => $booking['package_id']]);
+                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if(empty($date)){
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                    }else{
+                        echo '<td>'. $date['last_date'] .'</td>';
+                        echo '<td>'. $date['travel_date'] .'</td>';
+
+                        if($date['status'] == 'extended'){
+                            echo '<td class="text-danger font-weight-bold">Sorry!! We had to EXTEND the dates</td>';
+                        }else if($date['status'] == 'booking off'){
+                            echo '<td class="text-success font-weight-bold">We are ready to TRAVEL</td>';
+                        }else{
+                            echo '<td>Booking Still Going On</td>';
+                        }
+                        
+                    }
+
                     if(!empty($payment)){
                         echo '<td>'. ucwords($payment['tour_status']) .'</td>';
                     }else{
                         echo '<td></td>';
                     }
-                    if($booking['booking_status'] == 'pending'){
+                    if($booking['booking_status'] == 'pending' || (!empty($date) && $date['status'] == 'extended')){
                         echo '<td><a  href="booking.php?page=edit_booking&edit='. $booking['booking_id'] .'" class="btn btn-warning mt-1 mr-1"><i class="fas fa-edit"></i></a>';
                         echo '<a href="mybookings.php?delete='. $booking['booking_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
                     }else {
@@ -160,7 +188,7 @@
     ?>
 </div>
 
-<footer class='text-center p-1 mt-5' style="background: #E9EAEC;">
+<footer class='text-center p-1 mt-5' style="background: #DFE2DF;">
     <h6>tourism@tourville &copy;2020</h6>
 </footer>
 

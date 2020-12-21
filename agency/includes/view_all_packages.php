@@ -72,6 +72,7 @@
                 <th>Already Booked</th>
                 <th>Status</th>
                 <th>Comments</th>
+                <th>Dates</th>
                 <th>Created at</th>
                 <th>Available</th>
                 <th>Unavailable</th>
@@ -127,6 +128,16 @@
                                             ':comment_status'   => 'published']);
                             $comment_count = $stmt->fetchColumn();
                             echo '<td>'. $comment_count .'</td>';
+
+                            $stmt = $pdo->prepare('SELECT count(*) FROM package_dates WHERE package_id = :package_id');
+                            $stmt->execute([':package_id'   => $package['package_id']]);
+                            $found = $stmt->fetchColumn();
+                            if(empty($found)){
+                                echo '<td><a href="packages.php?page=add_date&package='. $package['package_id'] .'" class="btn btn-primary mt-1" style="background-color: #62A6F9;border: none;">Set</a></td>';
+                            }else{
+                                echo '<td><a href="packages.php?page=package_date">View</a></td>';
+                            }
+                            
                             echo '<td>'. $package['package_date'] .'</td>';
 
                         if($package['package_status'] == 'unavailable'){

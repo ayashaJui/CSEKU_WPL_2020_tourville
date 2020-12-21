@@ -62,6 +62,13 @@
         color: #cfd8dc;
         }
 
+        .stat{
+            background: #EAE8FF;
+            font-size: .9rem;
+            font-weight: 500;
+            border: 2px solid #85998A;
+        }
+
     </style>
 </head>
 
@@ -107,17 +114,18 @@
             echo '</div>';
             echo '<div class="col-md-8">';
                 echo '<div class="card-body pt-0">';
-                    echo '<div><div>';
-                        echo    '<h5 class="card-title">'. $package['package_name'] .'</h5>
-                                <p class="float-right" style="position: relative; top: -30px;">
-                                    <span class="text-muted mr-3">4.0</span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-active"></span>
-                                    <span class="fa fa-star star-inactive"></span>
-                                </p>
-                            </div>';
+                    echo '<div>';
+
+                    //read package date data
+                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
+                    $stmt->execute([':package_id'   => $package['package_id']]);
+                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        echo  '<h4 class="card-title mt-2">'. $package['package_name'] .'';
+                        if(!empty($date) && $date['status'] == 'booking off'){
+                            echo '<span class="badge rounded-pill ml-2 stat">'. ucwords($date['status']) .'</span>';
+                        }
+                        echo '</h4>';
                         echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
                         echo '<div class="" style="font-size: .85rem;">
                                 <p class="text-muted pt-2"><span class="mr-1" ><i class="far fa-clock"></i></span>'. $package['num_days'] .' days '. $package['num_nights'] .' nights</p>';
