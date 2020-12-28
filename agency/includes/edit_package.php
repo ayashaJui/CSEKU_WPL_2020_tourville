@@ -4,9 +4,7 @@
         if(isset($_GET['edit'])){
             $package_id = $_GET['edit'];
 
-            $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-            $stmt->execute([':package_id' => $package_id]);
-            $package = $stmt->fetch(PDO::FETCH_ASSOC);
+            $package = readPackage($package_id);
 
             $package_status = $package['package_status'];
             $package_date   = $package['package_date'];

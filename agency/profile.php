@@ -1,5 +1,6 @@
 <?php
     include '../includes/db.php';
+    include '../includes/functions.php';
     include 'layouts/agency_header.php';
     include 'layouts/agency_navbar.php';
 
@@ -11,9 +12,7 @@
     if(isset($_SESSION['agency_id'])){
         $agency_id = $_SESSION['agency_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-        $stmt->execute([':agency_id' => $agency_id]);
-        $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+        $agency = readAgency($agency_id);
     }
 ?>
 

@@ -36,6 +36,9 @@
                 <a class="nav-link py-3" href="packages.php">
                     Packages
                 </a>
+                <a class="nav-link py-3" href="payments.php">
+                    Payments
+                </a>
                 <a class="nav-link collapsed py-3" href="#" data-toggle="collapse" data-target="#collapseReviews" aria-expanded="false" aria-controls="collapsePages">
                     Reviews
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>

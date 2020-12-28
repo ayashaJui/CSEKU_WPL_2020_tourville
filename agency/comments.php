@@ -1,5 +1,6 @@
 <?php
     include '../includes/db.php';
+    include '../includes/functions.php';
     include 'layouts/agency_header.php';
     include 'layouts/agency_navbar.php';
 
@@ -11,8 +12,9 @@
     if(isset($_SESSION['agency_id'])){
         $agency_id = $_SESSION['agency_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM comments WHERE agency_id = :agency_id');
-        $stmt->execute([':agency_id' => $agency_id]);
+        $stmt = $pdo->prepare('SELECT * FROM comments WHERE agency_id = :agency_id AND comment_status = :comment_status');
+        $stmt->execute([':agency_id'        => $agency_id,
+                        ':comment_status'   => 'published']);
         $comments = [];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $comments[] = $row;
@@ -63,25 +65,17 @@
                         <tbody>
                         <?php
                             foreach($comments as $comment){
-                                if($comment['comment_status'] == 'unpublished'){
-                                    echo '<tr class="table-warning">';
-                                }else{
-                                    echo '<tr>';
-                                }
+                                echo '<tr>';
                                     echo '<td>'. $comment['comment_id'] .'</td>';
 
-                                    $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_id = :tourist_id');
-                                    $stmt->execute([':tourist_id' => $comment['tourist_id']]);
-                                    $tourist = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                    echo '<td>'. $tourist['tourist_firstname'] .' '. $tourist['tourist_lastname'] .'</td>';
+                                    $tourist = readTourist($comment['tourist_id']);
+                                    echo '<td>'. ucwords($tourist['tourist_firstname']) .' '. ucwords($tourist['tourist_lastname']) .'</td>';
                                     echo '<td>'. $tourist['tourist_email'] .'</td>';
 
-                                    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                                    $stmt->execute([':package_id' => $comment['package_id']]);
-                                    $package = $stmt->fetch(PDO::FETCH_ASSOC);
-
+                                    //Package Read Query
+                                    $package = readPackage($comment['package_id']);
                                     echo '<td><a href="../package.php?package_id='. $comment['package_id'] .'">'. $package['package_name'] .'</a></td>';
+
                                     echo '<td>'. $comment['content'] .'</td>';
                                     echo '<td>'. $comment['comment_date'] .'</td>';
                                 echo '</tr>';

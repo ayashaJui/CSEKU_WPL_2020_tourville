@@ -1,4 +1,6 @@
 <?php
+    include '../includes/db.php';
+    include '../includes/functions.php';
     include 'layouts/agency_header.php';
     include 'layouts/agency_navbar.php';
 
@@ -6,6 +8,19 @@
         header('Location: ../includes/login.php');
         return;
     }
+
+    if(isset($_SESSION['agency_id'])){
+        $agency_id = $_SESSION['agency_id'];
+
+        $stmt = $pdo->prepare('SELECT * FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status');
+        $stmt->execute([':agency_id'        => $agency_id,
+                        ':review_status'    => 'published']);
+        $reviews = [];
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $reviews[] = $row;
+        }
+    }
+
 ?>
 
 <head>
@@ -32,6 +47,13 @@
                     <li class="breadcrumb-item active">Ratings List</li>
                 </ol>
                 <div class="container-fluid mt-3">
+
+                <?php
+                    if(empty($reviews)){
+                        echo '<h1 class="text-center pt-4">No Review Found</h1>';
+                    }else{
+                ?>
+
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
@@ -44,16 +66,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>john@gmail.com</td>
-                                <td>4</td>
-                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, sunt.</td>
-                                <td>2020-10-28</td>
-                            </tr>
+
+                        <?php
+                            foreach($reviews as $review){
+                                echo '<tr>';
+                                    echo '<td>'. $review['review_id'] .'</td>';
+
+                                    $tourist = readTourist($review['tourist_id']);
+                                    echo '<td>'. ucwords($tourist['tourist_firstname']) .' '. ucwords($tourist['tourist_lastname']) .'</td>';
+                                    echo '<td>'. $tourist['tourist_email'] .'</td>';
+
+                                    echo '<td>'. $review['rating'] .'</td>';
+                                    echo '<td>'. $review['comment'] .'</td>';
+                                    echo '<td>'. $review['review_date'] .'</td>';
+                                echo '</tr>';
+                            }
+                        ?>
                         </tbody>
                     </table>
+
+                    <?php
+                    }
+                    ?>
+
                 </div>
             </div>
         </main>

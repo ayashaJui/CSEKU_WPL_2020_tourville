@@ -1,5 +1,6 @@
 <?php
     include '../includes/db.php';
+    include '../includes/functions.php';
     include 'layouts/agency_header.php';
     include 'layouts/agency_navbar.php';
 
@@ -8,10 +9,6 @@
         return;
     }
 ?>
-
-<!-- <head>
-    <link rel="stylesheet" href="../css/agency.php">
-</head> -->
 
 <div id="layoutSidenav">
     <?php

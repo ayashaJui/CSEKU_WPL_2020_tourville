@@ -1,5 +1,6 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     $page = 'packages';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
@@ -62,11 +63,18 @@
         color: #cfd8dc;
         }
 
-        .stat{
+        .status{
             background: #EAE8FF;
             font-size: .9rem;
             font-weight: 500;
             border: 2px solid #85998A;
+        }
+
+        .effect:hover{
+            box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            transition: box-shadow 0.2s ease-in-out;
         }
 
     </style>
@@ -85,67 +93,63 @@
   </div>
 </div>
 
-<?php
+<div class="container">
+<?php 
     if(empty($packages)){
         echo '<h1 class="text-center pt-4">No Package Found</h1>';
-    }else {
-        
+    }else{
 ?>
+    <div class="row">
+        <div class="col-sm-12">
+        <?php
+            foreach($packages as $package){
+                //get single image from database to show 
+                $place_img = getSingleImage($package['package_id']);
+        ?>
+            <div class="card m-5 pt-4 px-4 effect" style="border: none;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <a href="package.php?package_id=<?php echo $package['package_id'] ?>">
+                            <img src="images/packages/<?php echo $place_img; ?>" class="card-img" height="200" alt="<?php echo $package['package_name']; ?>">
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body pt-0">
+                            <h4 class="card-title"><?php echo $package['package_name']; ?>
+                            <?php 
+                                //read package date data
+                                $date = readPackageDates($package['package_id']);
+                                if(!empty($date) && $date['status'] == 'booking off'){
+                                    echo '<span class="badge rounded-pill ml-1 status">'. ucwords($date['status']) .'</span>';
+                                }
+                            ?>
+                            </h4>
+                            <h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span><?php echo $package['location'] .', '. $package['country']; ?></h5>
+                            <div class="" style="font-size: .85rem;">
+                                <p class="text-muted pt-2"><span class="mr-1" ><i class="far fa-clock"></i></span><?php echo $package['num_days'] .' days '. $package['num_nights'] .' nights' ?></p>
+                            </div>
+                            <p class="card-text mb-3" style="font-size: .7rem;"><?php echo substr($package['place_details'], 0, 40); ?>...</p><hr>
 
-<div class="container">
-    <div class="card mb-3" style="border: none;" >
-    
-<?php
-    foreach($packages as $package){
-        echo '<div class="row no-gutters">';
-            echo '<div class="col-md-4">';
-
-                //getting multiple image from database..
-                $stmt = $pdo->prepare('SELECT place_images FROM packages WHERE package_id = :package_id');
-                $stmt->execute([':package_id' => $package['package_id']]);
-                $img = $stmt->fetchColumn();
-                //convert string to array
-                $img = explode(',', $img);
-                //replace the special character to space
-                $search = ["(", "'", ")" ];
-                $place_img = str_replace($search, '', $img[0]);
-
-                echo '<a href="package.php?package_id='. $package['package_id'] .'"><img src="images/packages/'. $place_img .'" class="card-img" height="200" alt="'. $package['package_name'] .'"></a>';
-            echo '</div>';
-            echo '<div class="col-md-8">';
-                echo '<div class="card-body pt-0">';
-                    echo '<div>';
-
-                    //read package date data
-                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
-                    $stmt->execute([':package_id'   => $package['package_id']]);
-                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                        echo  '<h4 class="card-title mt-2">'. $package['package_name'] .'';
-                        if(!empty($date) && $date['status'] == 'booking off'){
-                            echo '<span class="badge rounded-pill ml-2 stat">'. ucwords($date['status']) .'</span>';
-                        }
-                        echo '</h4>';
-                        echo '<h5 class="font-italic text-info" style="font-size: .85rem;"><span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>'. $package['location'] .', '. $package['country'] .'</h5>';
-                        echo '<div class="" style="font-size: .85rem;">
-                                <p class="text-muted pt-2"><span class="mr-1" ><i class="far fa-clock"></i></span>'. $package['num_days'] .' days '. $package['num_nights'] .' nights</p>';
-                    echo '</div></div>';
-                    echo '<p class="card-text mb-3" style="font-size: .7rem;">'. substr($package['place_details'], 0, 40) .'...</p><hr>';
-                    echo '<div>';
-                        echo '<p class="text-muted" >
-                                <h5>BDT '. $package['budget_price'] .' /-</h5>
-                                <a href="package.php?package_id='. $package['package_id'] .'" class="btn btn-primary float-right" style="position: relative; top: -30px; font-size: .8rem;">View<span class=" ml-2"><i class="fas fa-angle-right"></i></span></a>
-                            </p>';
-                    echo '</div>';
-                echo '</div></div></div>';
-    }
-?>
+                            <div>
+                                <p class="text-muted" >
+                                    <h5>BDT <?php echo $package['budget_price'] ?> /-</h5>
+                                    <a href="package.php?package_id=<?php echo $package['package_id']; ?>" class="btn btn-primary float-right" style="position: relative; top: -30px; font-size: .8rem;">View<span class=" ml-2"><i class="fas fa-angle-right"></i></span>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php
+            }
+        ?>
+        </div>
     </div>
-</div>
-
 <?php
     }
 ?>
+</div>
 
 <div class="container">
     <nav aria-label="Page navigation example ">

@@ -4,9 +4,7 @@
         if(isset($_GET['edit'])){
             $agency_id = $_GET['edit'];
 
-            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-            $stmt->execute([':agency_id' => $agency_id]);
-            $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+            $agency = readAgency($agency_id);
 
             $agency_name    = $agency['agency_name'];
             $agency_email   = $agency['agency_email'];
@@ -94,10 +92,6 @@
     ?>
 
     <form action="" method="post" enctype="multipart/form-data" class="col-md-8">
-        <!-- <div class="form-group pb-2">
-            <label for="username">Agency Name</label>
-            <input type="text" class="form-control" value="Last Minute Vacation" id="" name="agency_name">
-        </div> -->
         <div class="form-group p-2">
             <label for="owner_firstname">Owner's First Name</label>
             <input type="text" class="form-control" value="<?php echo $agency['owner_firstname']; ?>" id="" name="owner_firstname">
@@ -106,10 +100,6 @@
             <label for="owner_lastname">Owner's Last Name</label>
             <input type="text" class="form-control" value="<?php echo $agency['owner_lastname']; ?>" id="" name="owner_lastname">
         </div>
-        <!-- <div class="form-group p-2">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" value="ryan@gmail.com" id="" name="email">
-        </div> -->
         <div class="form-group p-2">
             <label for="agency_password">Password</label>
             <input type="password" class="form-control" value="" id="" name="agency_password">

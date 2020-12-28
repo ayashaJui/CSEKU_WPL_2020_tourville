@@ -27,7 +27,7 @@
                 <div class="card border-primary">
                     <div class="card-body">
                         <h5 class="card-title"><i class="far fa-envelope"></i></h5>
-                        <p class="card-text">samia@gmail.com <br> jui@gmail.com</p>
+                        <p class="card-text"> jui1801@cseku.ac.bd <br> sharna1833@cseku.ac.bd</p>
                         
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="card border-success">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-phone"></i></h5>
-                        <p class="card-text">01587963 <br> 0234566</p>
+                        <p class="card-text">+8801521410529 <br> +8801763873861</p>
                         
                     </div>
                 </div>

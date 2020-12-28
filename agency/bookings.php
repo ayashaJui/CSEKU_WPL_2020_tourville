@@ -1,5 +1,6 @@
 <?php
     include '../includes/db.php';
+    include '../includes/functions.php';
     include 'layouts/agency_header.php';
     include 'layouts/agency_navbar.php';
 
@@ -128,9 +129,7 @@
                                             echo '<td>'. $booking['tourist_contact'] .'</td>';
 
                                             //Package Name Read Query
-                                            $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                                            $stmt->execute([':package_id' => $booking['package_id']]);
-                                            $package = $stmt->fetch(PDO::FETCH_ASSOC);
+                                            $package = readPackage($booking['package_id']);
 
                                             echo '<td><a href="../package.php?package_id='. $booking['package_id'] .'">'. $package['package_name'] .'</a></td>';
 

@@ -1,5 +1,6 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
 
@@ -84,25 +85,17 @@
         echo '<div class="row no-gutters">';
             echo '<div class="col-md-4">';
 
-                //getting multiple image from database..
-                $stmt = $pdo->prepare('SELECT place_images FROM packages WHERE package_id = :package_id');
-                $stmt->execute([':package_id' => $package['package_id']]);
-                $img = $stmt->fetchColumn();
-                //convert string to array
-                $img = explode(',', $img);
-                //replace the special character to space
-                $search = ["(", "'", ")" ];
-                $place_img = str_replace($search, '', $img[0]);
+                //get single image from database to show 
+                $place_img = getSingleImage($package['package_id']);
 
                 echo '<a href="package.php?package_id='. $package['package_id'] .'"><img src="images/packages/'. $place_img .'" class="card-img" height="200" alt="'. $package['package_name'] .'"></a>';
             echo '</div>';
             echo '<div class="col-md-8">';
                 echo '<div class="card-body pt-0">';
                     echo '<div>';
-                    //read package date data
-                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
-                    $stmt->execute([':package_id'   => $package['package_id']]);
-                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                        //read package date data
+                        $date = readPackageDates($package['package_id']);
 
                         echo  '<h4 class="card-title mt-2">'. $package['package_name'] .'';
                         if(!empty($date) && $date['status'] == 'booking off'){

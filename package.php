@@ -1,5 +1,6 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     $page = 'packages';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
@@ -341,9 +342,7 @@
                     $content    = $_POST['content'];
                     $date       = date("y.m.d");
 
-                    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                    $stmt->execute([':package_id'  => $package_id]);
-                    $package = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $package = readPackage($package_id);
 
                     if(empty($content)){
                         header('Location: package.php?package_id='. $package_id);
@@ -362,6 +361,13 @@
                         return;
                     }
                 }
+
+                if(isset($_SESSION['tourist_id'])){
+                    $stmt = $pdo->prepare('SELECT * FROM payments WHERE tourist_id = :tourist_id AND package_id = :package_id');
+                    $stmt->execute([':tourist_id' => $_SESSION['tourist_id'],
+                                ':package_id' => $package_id]);
+                    $payment = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
                 
             ?>
 
@@ -373,7 +379,7 @@
                         <textarea name="content" id="body" cols="50" rows="10"></textarea>
                     </div>
                     <?php
-                        if(isset($_SESSION['tourist_id'])){
+                        if(isset($_SESSION['tourist_id'])  && (!empty($payment) && $payment['tour_status'] == 'completed')){
                             echo '<div class="form-group">
                                     <input type="submit" class="btn btn-primary" name="post_comment" value="Post">
                                 </div>';

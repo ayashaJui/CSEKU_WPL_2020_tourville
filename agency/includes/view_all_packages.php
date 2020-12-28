@@ -65,7 +65,6 @@
                 <th>ID</th>
                 <th>Package Name</th>
                 <th>Location</th>
-                <!-- <th>Country</th> -->
                 <th>Price</th>
                 <th>Booking price(%)</th>
                 <th>Minimum Booking</th>
@@ -99,7 +98,6 @@
                             echo '<td>'. $package['package_id'] .'</td>';
                             echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
                             echo '<td>'. $package['location'] .'</td>';
-                            // echo '<td>'. $package['country'] .'</td>';
                             echo '<td>'. $package['budget_price'] .'(Budget)<br>
                                     '. $package['comfort_price'] .'(Comfortable)<br>
                                     '. $package['lux_price'] .'(Luxury)</td>';

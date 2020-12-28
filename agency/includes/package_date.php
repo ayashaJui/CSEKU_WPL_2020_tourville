@@ -72,7 +72,13 @@
             <tbody>
             <?php
                 foreach($dates as $date){
-                    echo '<tr>';
+                    if($date['status'] == 'booking off'){
+                        echo '<tr class="table table-secondary">';
+                    }else if($date['status'] == 'extended'){
+                        echo '<tr class="table table-danger">';
+                    }else{
+                        echo '<tr>';
+                    }
                         echo '<td>'. $date['date_id'] .'</td>';
                         
                         $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');

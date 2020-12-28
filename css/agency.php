@@ -65,14 +65,20 @@ td {
   color: #fbc02d;
 }
 
-.star-active:hover {
+.star-inactive {
+  color: #cfd8dc;
+}
+
+.star-half{
+  color: #fbc02d;
+}
+
+.star-active:hover,
+.star-half:hover {
   color: #f9a825;
   cursor: pointer;
 }
 
-.star-inactive {
-  color: #cfd8dc;
-}
 .content {
   font-size: 18px;
 }
@@ -84,9 +90,16 @@ td {
   margin-right: 30px;
 }
 
-.stat{
-    background: #EAE8FF;
-    font-size: .9rem;
-    font-weight: 500;
-    border: 2px solid #85998A;
+.status{
+  background: #EAE8FF;
+  font-size: .8rem;
+  font-weight: 500;
+  border: 2px solid #85998A;
+}
+
+.effect:hover{
+  box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+  -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+  -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+  transition: box-shadow 0.2s ease-in-out;
 }

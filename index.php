@@ -1,5 +1,6 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     $page = 'index';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
@@ -17,37 +18,57 @@
       .carousel-item.active {
         height: 86vh;
       }
+
       .carousel-inner {
         height: 100%;
       }
+
       .carousel-item:nth-child(1) {
         background-image: url("images/view/carousel1.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
       }
+
       .carousel-item:nth-child(2) {
         background-image: url("images/view/carousel2.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
       }
+
       .carousel-item:nth-child(3) {
         background-image: url("images/view/carousel3.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
       }
+
       .star-active {
         color: #fbc02d;
       }
-      .star-active:hover {
+
+      .star-half{
+        color: #fbc02d;
+      }
+
+      .star-active:hover,
+      .star-half:hover{
         color: #f9a825;
         cursor: pointer;
       }
+
       .star-inactive {
         color: #cfd8dc;
       }
+
+      .effect:hover{
+        box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        transition: box-shadow 0.2s ease-in-out;
+      }
+
     </style>
       
 </head>
@@ -81,11 +102,6 @@
               <li>
                 <form action="search.php" method="post" class="input-group">
                   <input type="text" name="search" id="" placeholder="Search" class="form-control col-md-4 ml-5">
-                  <!-- <select name="search_by" id="" class="custom-select col-sm-1 mx-1">
-                    <option value="">Select</option>
-                    <option value="package">Package</option>
-                    <option value="agency">Agency</option>
-                  </select> -->
                   <button class="btn btn-outline-success ml-1 p-2" type="submit" name="submit"><i class="fas fa-search"></i></button>
                 </form>
               </li>
@@ -148,174 +164,72 @@
   </div>
   <!--/.Carousel Wrapper-->
 
-<!-- Trending Packages -->
-<div class="container">
-  <h3 class="text-center my-5 pt-5">Trending Packages</h3>
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card mb-5 mt-2">
-        <div>
-          <a href="package.php?package_id=1">
-          <img src="images/packages/astronomy-beautiful-clouds-constellation-355465.jpg" class="card-img-top" alt="..."></a>
-          <div class="p-2" style="position: absolute; top: 0;">
-            <span class="bg-dark text-white">From BDT 3000/-</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-text">
-            <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> sajek, Bangladesh</h5>
-            <h5><a href="package.php?package_id=1">Sajek Tour</a></h5>
-            <p class="lead" style="font-size: 1rem;">
-                <span class="text-muted mr-3">4.0</span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-inactive"></span>
-            </p>
-            <p class="text-muted" style="font-size: .8rem;"><span class="mr-1"><i class="far fa-clock"></i></span>4 days 5 nights</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card mb-5 mt-2">
-        <div>
-          <a href="package.php?package_id=1">
-          <img src="images/packages/astronomy-beautiful-clouds-constellation-355465.jpg" class="card-img-top" alt="..."></a>
-          <div class="p-2" style="position: absolute; top: 0;">
-            <span class="bg-dark text-white">From BDT 3000/-</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-text">
-            <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> sajek, Bangladesh</h5>
-            <h5><a href="package.php?package_id=1">Sajek Tour</a></h5>
-            <p class="lead" style="font-size: 1rem;">
-                <span class="text-muted mr-3">4.0</span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-inactive"></span>
-            </p>
-            <p class="text-muted" style="font-size: .8rem;"><span class="mr-1"><i class="far fa-clock"></i></span>4 days 5 nights</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card mb-5 mt-2">
-        <div>
-          <a href="package.php?package_id=1">
-          <img src="images/packages/astronomy-beautiful-clouds-constellation-355465.jpg" class="card-img-top" alt="..."></a>
-          <div class="p-2" style="position: absolute; top: 0;">
-            <span class="bg-dark text-white">From BDT 3000/-</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-text">
-            <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> sajek, Bangladesh</h5>
-            <h5><a href="package.php?package_id=1">Sajek Tour</a></h5>
-            <p class="lead" style="font-size: 1rem;">
-                <span class="text-muted mr-3">4.0</span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-active"></span>
-                <span class="fa fa-star star-inactive"></span>
-            </p>
-            <p class="text-muted" style="font-size: .8rem;"><span class="mr-1"><i class="far fa-clock"></i></span>4 days 5 nights</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<hr>
-<!-- Top Packages -->
+<!-- Top Agencies according to Ratings -->
+<?php
+    $stmt = $pdo->prepare('SELECT agency_id, avg(rating) AS avg_rate FROM reviews WHERE review_status = :review_status GROUP BY agency_id ORDER BY avg(rating) DESC LIMIT 9');
+    $stmt->execute([':review_status' => 'published']);
+    $top_agencies = [];
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $top_agencies[] = $row;
+    }
+?>
+
 <div class="container">
     <h3 class="text-center my-5 pt-5">Top Agencies</h3>
     <div class="row">
+
+    <?php
+      if(empty($top_agencies)){
+        echo '<h1 class="text-center pt-4">No Agency Found</h1>';
+      }else{
+        foreach($top_agencies as $top_agency){
+          $agency = readAgency($top_agency['agency_id']);
+
+    ?>
+
       <div class="col-sm-4">
-        <div class="card mb-5 mt-2">
+        <div class="card mb-5 mt-2 effect">
           <div>
-            <a href="agency.php?agency_id=1">
-            <img src="images/agency_logo.jpg" class="card-img-top" alt="..."></a>
+            <a href="agency.php?agency_id=<?php echo $top_agency['agency_id']; ?>">
+            <img src="images/<?php echo $agency['logo_image']; ?>" class="card-img-top" height="240" alt="<?php echo $agency['agency_name']; ?>"></a>
           </div>
           <div class="card-body">
             <div class="card-text">
-              <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> 22, bk street, khulna</h5>
-              <h5><a href="package.php?package_id=1">Last Minute Vacation</a></h5>
+              <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> <?php echo $agency['agency_address']; ?></h5>
+              <h5><a href="agency.php?agency_id=<?php echo $top_agency['agency_id']; ?>"><?php echo $agency['agency_name']; ?></a></h5>
               <p class="lead" style="font-size: 1rem;">
-                  <span class="text-muted mr-3">4.0</span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-inactive"></span>
+                  <span class="text-dark font-weight-bold mr-3"><?php echo number_format((float)$top_agency['avg_rate'], 1, '.', ''); ?></span>
+                  <?php
+                      $starActive = round($top_agency['avg_rate'], 0, PHP_ROUND_HALF_DOWN);
+                      $starInactive = 5 - round($top_agency['avg_rate'], 0, PHP_ROUND_HALF_UP);
+                      $starHalf = 5 - ($starActive + $starInactive);
+
+                      for($i=0; $i<$starActive; $i++){
+                          echo '<span class="fa fa-star star-active mx-1"></span>';
+                      }
+                      for($i=0; $i<$starHalf; $i++){
+                          echo '<span class="fas fa-star-half-alt star-half mx-1"></span>';
+                      }
+                      for($i=0; $i<$starInactive; $i++){
+                          echo '<span class="fa fa-star star-inactive mx-1"></span>';
+                      }
+                  ?>
               </p>
               <div style="font-size: .8rem;">
-                <p><span class="mr-2"><i class="fas fa-envelope"></i></span> Email: ryan@gmail.com</p>
+                <p><span class="mr-2"><i class="fas fa-envelope"></i></span> Email: <?php echo $agency['agency_email']; ?></p>
                 <!-- <p><span class="mr-2"><i class="fas fa-phone-alt"></i></span> 017895235</p> -->
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="card mb-5 mt-2">
-          <div>
-            <a href="agency.php?agency_id=1">
-            <img src="images/agency_logo.jpg" class="card-img-top" alt="..."></a>
-          </div>
-          <div class="card-body">
-            <div class="card-text">
-              <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> 22, bk street, khulna</h5>
-              <h5><a href="package.php?package_id=1">Last Minute Vacation</a></h5>
-              <p class="lead" style="font-size: 1rem;">
-                  <span class="text-muted mr-3">4.0</span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-inactive"></span>
-              </p>
-              <div style="font-size: .8rem;">
-                <p><span class="mr-2"><i class="fas fa-envelope"></i></span> Email: ryan@gmail.com</p>
-                <!-- <p><span class="mr-2"><i class="fas fa-phone-alt"></i></span> 017895235</p> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="card mb-5 mt-2">
-          <div>
-            <a href="agency.php?agency_id=1">
-            <img src="images/agency_logo.jpg" class="card-img-top" alt="..."></a>
-          </div>
-          <div class="card-body">
-            <div class="card-text">
-              <h5 class="font-weight-italic text-muted" style="font-size: .8rem;"><i class="fas fa-map-marker-alt"></i> 22, bk street, khulna</h5>
-              <h5><a href="package.php?package_id=1">Last Minute Vacation</a></h5>
-              <p class="lead" style="font-size: 1rem;">
-                  <span class="text-muted mr-3">4.0</span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-active"></span>
-                  <span class="fa fa-star star-inactive"></span>
-              </p>
-              <div style="font-size: .8rem;">
-                <p><span class="mr-2"><i class="fas fa-envelope"></i></span> Email: ryan@gmail.com</p>
-                <!-- <p><span class="mr-2"><i class="fas fa-phone-alt"></i></span> 017895235</p> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <?php
+        }
+      }
+      ?>
+
     </div>
 </div>
 

@@ -1,5 +1,6 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
 
@@ -102,18 +103,14 @@
                     echo '<td>'. $booking['booking_id'] .'</td>';
 
                     //Package Name Reading From packages Table
-                    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                    $stmt->execute([':package_id' => $booking['package_id']]);
-                    $package = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $package = readPackage($booking['package_id']);
 
                     echo '<td><a href="package.php?package_id='. $booking['package_id'] .'">'. $package['package_name'] .'</a></td>';
 
                     //Agency Name Reading From agencies Table
-                    $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-                    $stmt->execute([':agency_id' => $package['agency_id']]);
-                    $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $agency = readAgency($booking['agency_id']);
 
-                    echo '<td><a href="agency.php?agency_id='. $package['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
+                    echo '<td><a href="agency.php?agency_id='. $booking['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
                     echo '<td>'. ucwords($booking['booking_status']) .'</td>';
                     echo '<td>'. ucwords($booking['travel_style']) .'</td>';
                     echo '<td>'. $booking['persons'] .'</td>';
@@ -143,10 +140,12 @@
                     }
 
                     //read package date data
-                    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE package_id = :package_id');
-                    $stmt->execute([':package_id'   => $booking['package_id']]);
-                    $date = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if(empty($date)){
+                    $date = readPackageDates($package['package_id']);
+                    if(!empty($payment) && $payment['tour_status'] == 'completed'){
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                    }else if(empty($date)){
                         echo '<td></td>';
                         echo '<td></td>';
                         echo '<td></td>';

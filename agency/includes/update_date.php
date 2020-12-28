@@ -21,9 +21,10 @@
                 header('Location: packages.php?page=add_date&package='. $package_id);
                 return;
             }else{
-                $stmt = $pdo->prepare('UPDATE package_dates SET package_id = :package_id, agency_id = :agency_id, last_date = :last_date, travel_date = :travel_date, status = :status, date = :date');
+                $stmt = $pdo->prepare('UPDATE package_dates SET package_id = :package_id, agency_id = :agency_id, last_date = :last_date, travel_date = :travel_date, status = :status, date = :date WHERE date_id = :date_id');
 
-                $stmt->execute([':package_id'   => $package_id,
+                $stmt->execute(['date_id'       => $date_id,
+                                ':package_id'   => $package_id,
                                 ':agency_id'    => $agency_id,
                                 ':last_date'    => $last_date,
                                 ':travel_date'  => $travel_date,
@@ -39,6 +40,7 @@
 
     if(isset($_SESSION['agency_id'])){
         $agency_id  = $_SESSION['agency_id'];
+        
         if(isset($_GET['edit'])){
             $date_id    = $_GET['edit'];
 
@@ -50,7 +52,7 @@
 
             updateDates($status, $date_id, $date, $agency_id, $package_id);
         }
-        if(isset($_GET['extend'])){
+        else if(isset($_GET['extend'])){
             $date_id    = $_GET['extend'];
 
             $dates = readDates($date_id);

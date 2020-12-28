@@ -17,11 +17,9 @@
         $package = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $tourist_id     = $booking['tourist_id'];
+        $package_id     = $booking['package_id'];
         $agency_id      = $booking['agency_id'];
 
-        // $total = '';
-        // $half = '';
-        // $book = '';
         if($booking['travel_style'] == 'luxury'){
             $total  = $package['lux_price'] * $booking['persons'];
             $half   = $total / 2;
@@ -56,9 +54,10 @@
                 header('Location: payment.php?booking_id='. $booking_id);
                 return;
             }else{
-                $stmt = $pdo->prepare('INSERT INTO payments(booking_id, agency_id, tourist_id, amount, payment_status, card_name, card_number, expire_date, tour_status, date) VALUES(:booking_id,  :agency_id, :tourist_id, :amount, :payment_status, :card_name, :card_number, :expire_date, :tour_status, :date)');
+                $stmt = $pdo->prepare('INSERT INTO payments(booking_id, package_id, agency_id, tourist_id, amount, payment_status, card_name, card_number, expire_date, tour_status, date) VALUES(:booking_id, :package_id,  :agency_id, :tourist_id, :amount, :payment_status, :card_name, :card_number, :expire_date, :tour_status, :date)');
 
                 $stmt->execute([':booking_id'       => $booking_id,
+                                ':package_id'       => $package_id,
                                 ':agency_id'        => $agency_id,
                                 ':tourist_id'       => $tourist_id,
                                 ':amount'           => $amount,

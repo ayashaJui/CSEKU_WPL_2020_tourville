@@ -7,25 +7,39 @@
 ?>
 <head>
     <style>
-        .agency {
-            background-image: url("images/view/agency.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center center;
-            height: 50vh;
-        }
-        .star-active {
-          color: #fbc02d;
-        }
+      .agency {
+        background-image: url("images/view/agency.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        height: 50vh;
+      }
 
-        .star-active:hover {
-          color: #f9a825;
-          cursor: pointer;
-        }
+      .star-active {
+        color: #fbc02d;
+      }
 
-        .star-inactive {
-          color: #cfd8dc;
-        }
+      .star-half{
+        color: #fbc02d;
+      }
+
+      .star-active:hover,
+      .star-half:hover{
+        color: #f9a825;
+        cursor: pointer;
+      }
+
+      .star-inactive {
+        color: #cfd8dc;
+      }
+
+      .effect:hover{
+        box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+        transition: box-shadow 0.2s ease-in-out;
+      }
+
     </style>
 </head>
 
@@ -63,7 +77,7 @@
 <?php
   foreach($agencies as $agency){
     echo '<div class="col-sm-6">';
-      echo '<div class="card mb-3">';
+      echo '<div class="card mb-3 effect">';
         echo '<div class="row no-gutters">';
           echo '<div class="col-md-4">';
             echo '<a href="agency.php?agency_id='. $agency['agency_id'] .'"><img src="images/'. $agency['logo_image'] .'" class="card-img" height="180" alt="'. $agency['agency_name'] .'"></a>';
@@ -72,14 +86,28 @@
             echo '<div class="card-body">';
               echo '<div>';
                 echo '<h5 class="card-title">'. $agency['agency_name'] .'</h5>';
+
+                //Avg rating
+                $stmt = $pdo->prepare('SELECT avg(rating) AS avg_rate FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status');
+                $stmt->execute([':agency_id'      => $agency['agency_id'],
+                                ':review_status'  => 'published']);
+                $avg_rate = $stmt->fetch(PDO::FETCH_ASSOC);
                 echo '<p class="my-1" style="font-size: .8rem;">
-                        <span class="text-muted mr-3">4.0</span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-inactive"></span>
-                      </p>';
+                        <span class="text-dark mr-3">'. number_format((float)$avg_rate['avg_rate'], 1, '.', '') .'</span>';
+                        $starActive = round($avg_rate['avg_rate'], 0, PHP_ROUND_HALF_DOWN);
+                        $starInactive = 5 - round($avg_rate['avg_rate'], 0, PHP_ROUND_HALF_UP);
+                        $starHalf = 5 - ($starActive + $starInactive);
+
+                        for($i=0; $i<$starActive; $i++){
+                            echo '<span class="fa fa-star star-active mx-1"></span>';
+                        }
+                        for($i=0; $i<$starHalf; $i++){
+                            echo '<span class="fas fa-star-half-alt star-half mx-1"></span>';
+                        }
+                        for($i=0; $i<$starInactive; $i++){
+                            echo '<span class="fa fa-star star-inactive mx-1"></span>';
+                        }
+                echo  '</p>';
               echo '</div>';
               echo '<p class="card-text"  style="font-size: 1rem;"><span class="mr-2"><i class="fas fa-map-marker-alt"></i></span>'. $agency['agency_address'] .'</p>';
               echo '<div>';
