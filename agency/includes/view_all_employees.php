@@ -58,9 +58,10 @@
             </thead>
             <tbody>
             <?php
+                $i = 1;
                 foreach($employees as $employee){
                     echo '<tr>';
-                        echo '<td>'. $employee['employee_id'] .'</td>';
+                        echo '<td>'. $i++ .'</td>';
                         echo '<td>'. $employee['employee_firstname'] .'</td>';
                         echo '<td>'. $employee['employee_lastname'] .'</td>';
                         echo '<td>'. $employee['employee_email'] .'</td>';

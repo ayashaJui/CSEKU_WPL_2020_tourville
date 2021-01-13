@@ -46,11 +46,16 @@
 
 <div class="container-fluid">
     <div class="card mx-auto col-sm-6" style="border: none;">
-        <p class="pb-5 ">
-            <h2 class="p-2 font-italic text-center">If you are an <span class="font-weight-bold">Admin</span>, <br>
-            then <span class="font-weight-bold ">Log In</span></h2>
-            <h3 class="p-2 font-italic text-center">else, go back to <span class="font-weight-bold"><a href="../index.php">User Site</a></span></h3>
-        </p>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="p-5 font-italic text-center font-weight-bold" style="font-size: 3rem;">Admin Log In</h2>
+                    <h5 class="p-2 font-italic text-center">
+                        Go back to <span class="font-weight-bold"><a href="../index.php">User Site</a></span>
+                    </h5>
+                </div>
+            </div>
+        </div>
 
         <?php
             include '../includes/flash_msg.php';

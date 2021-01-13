@@ -75,13 +75,15 @@
         <tbody>
 
             <?php
+
+                $i = 1;
                 foreach($admins as $admin){
                     if($admin['admin_status'] == 'unapproved'){
                         echo "<tr class='table-warning'>";
                     }else {
                         echo "<tr>";
                     }
-                            echo "<td>". $admin['admin_id'] ."</td>";
+                            echo "<td>". $i++ ."</td>";
                             echo "<td>". $admin['username'] ."</td>";
                             echo "<td>". ucwords($admin['admin_firstname']) ."</td>";
                             echo "<td>". ucwords($admin['admin_lastname']) ."</td>";

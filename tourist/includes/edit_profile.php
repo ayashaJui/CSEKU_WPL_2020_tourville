@@ -1,4 +1,11 @@
 <?php
+
+     require 'vendor/autoload.php';
+
+    // Stripe API Key
+    $stripe = new \Stripe\StripeClient(
+    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
+    );
     
     if(isset($_SESSION['tourist_id'])){
         if(isset($_GET['edit'])){
@@ -8,10 +15,11 @@
             $stmt->execute([':tourist_id' => $tourist_id]);
             $tourist = $stmt->fetch(PDO::FETCH_ASSOC);
         
-            $username       = $tourist['tourist_username'];
-            $tourist_email  = $tourist['tourist_email'];
-            $tourist_status = $tourist['tourist_status'];
-            $tourist_date   = $tourist['date'];
+            $username           = $tourist['tourist_username'];
+            $tourist_email      = $tourist['tourist_email'];
+            $tourist_status     = $tourist['tourist_status'];
+            $tourist_date       = $tourist['date'];
+            $tourist_stripe_id  = $tourist['tourist_stripe'];
 
             if(isset($_POST['update_profile'])){
                 $firstname  = htmlentities($_POST['tourist_firstname']);
@@ -20,6 +28,12 @@
                 $address    = htmlentities($_POST['tourist_address']);
 
                 $password   = htmlentities($_POST['tourist_password']);
+
+                $tourist_stripe = $stripe->customers->update(
+                    $tourist_stripe_id,
+                    ['name'  => $firstname." ".$lastname,
+                    'email'  => $tourist_email]
+                );
 
                 //uploading image in images folder
                 $profile_img = $_FILES['profile_image']['name'];
@@ -52,9 +66,10 @@
                     header('Location: profile.php?page=edit_profile&edit='. $tourist_id);
                     return;
                 }else{
-                    $stmt = $pdo->prepare('UPDATE tourists SET tourist_username = :tourist_username, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_password = :tourist_password, profile_image = :profile_image,  tourist_contact = :tourist_contact, tourist_address = :tourist_address, tourist_status = :tourist_status, date = :date WHERE tourist_id = :tourist_id');
+                    $stmt = $pdo->prepare('UPDATE tourists SET tourist_stripe = :tourist_stripe, tourist_username = :tourist_username, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_password = :tourist_password, profile_image = :profile_image,  tourist_contact = :tourist_contact, tourist_address = :tourist_address, tourist_status = :tourist_status, date = :date WHERE tourist_id = :tourist_id');
 
-                    $stmt->execute([':tourist_id'          => $tourist_id,
+                    $stmt->execute(['tourist_stripe'       => $tourist_stripe->id,
+                                    ':tourist_id'          => $tourist_id,
                                     ':tourist_username'    => $username,
                                     ':tourist_firstname'   => $firstname,
                                     ':tourist_lastname'    => $lastname,

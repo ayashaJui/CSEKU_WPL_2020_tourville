@@ -31,7 +31,7 @@
     }
 
     //Package read Query.. All Packages
-    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_status = :package_status LIMIT '. $start .', '.$per_page);
+    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_status = :package_status ORDER BY package_name LIMIT '. $start .', '.$per_page);
     $stmt->execute([':package_status' => 'available']);
     $packages = [];
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){

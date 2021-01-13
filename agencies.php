@@ -59,7 +59,7 @@
 <?php
   
   //Agency Read Query ... approved agency
-  $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_status = :agency_status');
+  $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_status = :agency_status ORDER BY agency_name');
   $stmt->execute([':agency_status' => 'approved']);
   $agencies = [];
   while($row = $stmt->fetch(PDO::FETCH_ASSOC)){

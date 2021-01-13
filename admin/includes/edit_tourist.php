@@ -7,9 +7,11 @@
         $stmt->execute([':tourist_id' => $tourist_id]);
         $tourist_status = '';
         $tourist_date = '';
+        $tourist_stripe_id = '';
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $tourist_status = $row['tourist_status'];
             $tourist_date = $row['date'];
+            $tourist_stripe_id  = $row['tourist_stripe'];
         }
 
         if(isset($_POST['update_tourist'])){
@@ -21,6 +23,12 @@
             $address    = htmlentities($_POST['tourist_address']);
 
             $password   = htmlentities($_POST['tourist_password']);
+
+            $tourist_stripe = $stripe->customers->update(
+                $tourist_stripe_id,
+                ['name'  => $firstname." ".$lastname,
+                'email'  => $email]
+            );
             
              //uploading image in images folder
             $profile_img = $_FILES['profile_image']['name'];
@@ -53,19 +61,20 @@
                 header('Location: tourists.php?page=edit_tourist&edit='. $tourist_id);
                 return;
             }else{
-                $stmt = $pdo->prepare('UPDATE tourists SET tourist_username = :tourist_username, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_password = :tourist_password, profile_image = :profile_image,  tourist_contact = :tourist_contact, tourist_address = :tourist_address, tourist_status = :tourist_status, date = :date WHERE tourist_id = :tourist_id');
+                $stmt = $pdo->prepare('UPDATE tourists SET tourist_stripe = :tourist_stripe, tourist_username = :tourist_username, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_password = :tourist_password, profile_image = :profile_image,  tourist_contact = :tourist_contact, tourist_address = :tourist_address, tourist_status = :tourist_status, date = :date WHERE tourist_id = :tourist_id');
 
-                $stmt->execute([':tourist_id'      => $tourist_id,
-                            ':tourist_username'    => $username,
-                            ':tourist_firstname'   => $firstname,
-                            ':tourist_lastname'    => $lastname,
-                            ':tourist_email'       => $email,
-                            ':tourist_password'    => $password,
-                            ':profile_image'       => $profile_img,
-                            ':tourist_contact'     => $user_contact,
-                            ':tourist_address'     => $address,
-                            ':tourist_status'      => $tourist_status,
-                            ':date'                => $date]);
+                $stmt->execute(['tourist_stripe'        => $tourist_stripe->id,
+                                ':tourist_id'           => $tourist_id,
+                                ':tourist_username'     => $username,
+                                ':tourist_firstname'    => $firstname,
+                                ':tourist_lastname'     => $lastname,
+                                ':tourist_email'        => $email,
+                                ':tourist_password'     => $password,
+                                ':profile_image'        => $profile_img,
+                                ':tourist_contact'      => $user_contact,
+                                ':tourist_address'      => $address,
+                                ':tourist_status'       => $tourist_status,
+                                ':date'                 => $date]);
 
                 $_SESSION['success'] = 'Tourist Info Updated';
                 header('Location: tourists.php');

@@ -1,6 +1,6 @@
 <?php
     
-    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE agency_id = :agency_id');
+    $stmt = $pdo->prepare('SELECT * FROM package_dates WHERE agency_id = :agency_id ORDER BY status');
     $stmt->execute([':agency_id'  => $_SESSION['agency_id']]);
     $dates = [];
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -71,6 +71,7 @@
             </thead>
             <tbody>
             <?php
+                $i = 1;
                 foreach($dates as $date){
                     if($date['status'] == 'booking off'){
                         echo '<tr class="table table-secondary">';
@@ -79,7 +80,7 @@
                     }else{
                         echo '<tr>';
                     }
-                        echo '<td>'. $date['date_id'] .'</td>';
+                        echo '<td>'. $i++ .'</td>';
                         
                         $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
                         $stmt->execute([':package_id' => $date['package_id']]);
@@ -90,6 +91,15 @@
                         echo '<td>'. $date['travel_date'] .'</td>';
                         echo '<td>'. ucwords($date['status']) .'</td>';
 
+                    if($date['status'] != 'booking on'){
+                        echo '<td><a href="packages.php?page=update_date&extend='. $date['date_id'] .'" class="btn btn-info mt-1">Extend</a></td>';
+
+                        echo '<td><a href="packages.php?page=package_date&b_on='. $date['date_id'] .'" class="btn btn-success mt-1 mr-1">On</a>';
+                        echo '<a href="packages.php?page=package_date&b_off='. $date['date_id'] .'" class="btn btn-secondary mt-1">Off</a></td>';
+
+                        echo '<td><a href="packages.php?page=update_date&edit='. $date['date_id'] .'" class="btn btn-warning mt-1 mr-1"><i class="fas fa-edit"></i></a>';
+                        echo '<a href="packages.php?page=package_date&delete='. $date['date_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                    }else{
                         echo '<td><a href="packages.php?page=update_date&extend='. $date['date_id'] .'" class="btn btn-outline-info mt-1">Extend</a></td>';
 
                         echo '<td><a href="packages.php?page=package_date&b_on='. $date['date_id'] .'" class="btn btn-outline-success mt-1 mr-1">On</a>';
@@ -97,6 +107,7 @@
 
                         echo '<td><a href="packages.php?page=update_date&edit='. $date['date_id'] .'" class="btn btn-outline-warning mt-1 mr-1"><i class="fas fa-edit"></i></a>';
                         echo '<a href="packages.php?page=package_date&delete='. $date['date_id'] .'" class="btn btn-outline-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                    }
                     echo '</tr>';
                 }
             ?>

@@ -63,14 +63,14 @@
 
 <br><br>
 <div class="container" >
-    <h2 class="p-2 pb-5">Add Admin</h2>
+    <h2 class="p-2 pb-4">Add Admin</h2>
     
     <?php
         include '../includes/flash_msg.php';
     ?>
 
     <form action="" method="post" enctype="multipart/form-data" class="col-md-8">
-        <div class="form-group pb-2">
+        <div class="form-group p-2">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="" name="username">
         </div>

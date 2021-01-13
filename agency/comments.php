@@ -12,7 +12,7 @@
     if(isset($_SESSION['agency_id'])){
         $agency_id = $_SESSION['agency_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM comments WHERE agency_id = :agency_id AND comment_status = :comment_status');
+        $stmt = $pdo->prepare('SELECT * FROM comments WHERE agency_id = :agency_id AND comment_status = :comment_status ORDER BY comment_id DESC');
         $stmt->execute([':agency_id'        => $agency_id,
                         ':comment_status'   => 'published']);
         $comments = [];
@@ -64,9 +64,10 @@
                         </thead>
                         <tbody>
                         <?php
+                        $i = 1;
                             foreach($comments as $comment){
                                 echo '<tr>';
-                                    echo '<td>'. $comment['comment_id'] .'</td>';
+                                    echo '<td>'. $i++ .'</td>';
 
                                     $tourist = readTourist($comment['tourist_id']);
                                     echo '<td>'. ucwords($tourist['tourist_firstname']) .' '. ucwords($tourist['tourist_lastname']) .'</td>';
@@ -76,7 +77,7 @@
                                     $package = readPackage($comment['package_id']);
                                     echo '<td><a href="../package.php?package_id='. $comment['package_id'] .'">'. $package['package_name'] .'</a></td>';
 
-                                    echo '<td>'. $comment['content'] .'</td>';
+                                    echo '<td>'. substr($comment['content'], 0, 100) .' ......</td>';
                                     echo '<td>'. $comment['comment_date'] .'</td>';
                                 echo '</tr>';
                             }

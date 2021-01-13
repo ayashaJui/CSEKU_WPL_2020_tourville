@@ -1,7 +1,7 @@
 <?php
 
     //Tourist Read Query
-    $stmt = $pdo->query('SELECT * FROM tourists ');
+    $stmt = $pdo->query('SELECT * FROM tourists ORDER BY tourist_username');
     $stmt->execute();
     $tourists = [];
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -33,8 +33,19 @@
     }
 
     //Tourist Delete Query
+    $tourist_stripe = '';
     if(isset($_GET['delete'])){
         $tourist_id = $_GET['delete'];
+
+        $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_id = :tourist_id');
+        $stmt->execute([':tourist_id' => $tourist_id]);
+        $tourist = $stmt->fetch(PDO::FETCH_ASSOC);
+        $tourist_stripe = $tourist['tourist_stripe'];
+        
+        $stripe->customers->delete(
+            $tourist_stripe,
+            []
+        );
 
         $stmt = $pdo->prepare('DELETE FROM tourists WHERE tourist_id = :tourist_id');
         $stmt->execute([':tourist_id' => $tourist_id]);
@@ -52,7 +63,6 @@
         if(empty($tourists)){
             echo '<h1 class="text-center pt-4">No Tourist Found</h1>';
         }else{
-
     ?>
 
     <table class="table table-bordered table-hover">
@@ -76,14 +86,15 @@
         <tbody>
             
         <?php
+            $i = 1;
             foreach($tourists as $tourist){
                 if($tourist['tourist_status'] == 'unapproved'){
                     echo "<tr class='table-warning'>";
                 }else{
                     echo "<tr>";
                 }              
-                        echo "<td>". $tourist['tourist_id'] ."</td>";
-                        echo "<td>". $tourist['tourist_username'] ."</td>";
+                        echo "<td>". $i++ ."</td>";
+                        echo "<td>". $tourist['tourist_username']  ."</td>";
                         echo "<td>". ucwords($tourist['tourist_firstname']) ."</td>";
                         echo "<td>". ucwords($tourist['tourist_lastname']) ."</td>";
                         echo "<td>". $tourist['tourist_email'] ."</td>";
@@ -96,13 +107,13 @@
                     if($tourist['tourist_status'] == 'unapproved'){
                         echo "<td><a href='tourists.php?approve=". $tourist['tourist_id'] ."' class='btn btn-success mt-1'>Approve</a></td>";
                         echo "<td><a href='tourists.php?unapprove=". $tourist['tourist_id'] ."' class='btn btn-secondary mt-1'>Unapprove</a></td>";
-                        echo "<td><a href='tourists.php?page=edit_tourist&edit=". $tourist['tourist_id'] ."' class='btn btn-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
-                        echo "<a href='tourists.php?delete=". $tourist['tourist_id'] ."' class='btn btn-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+                        // echo "<td><a href='tourists.php?page=edit_tourist&edit=". $tourist['tourist_id'] ."' class='btn btn-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
+                        echo "<td><a href='tourists.php?delete=". $tourist['tourist_id'] ."' class='btn btn-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
                     }else {
                         echo "<td><a href='tourists.php?approve=". $tourist['tourist_id'] ."' class='btn btn-outline-success mt-1'>Approve</a></td>";
                         echo "<td><a href='tourists.php?unapprove=". $tourist['tourist_id'] ."' class='btn btn-outline-secondary mt-1'>Unapprove</a></td>";
-                        echo "<td><a href='tourists.php?page=edit_tourist&edit=". $tourist['tourist_id'] ."' class='btn btn-outline-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
-                        echo "<a href='tourists.php?delete=". $tourist['tourist_id'] ."' class='btn btn-outline-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+                        // echo "<td><a href='tourists.php?page=edit_tourist&edit=". $tourist['tourist_id'] ."' class='btn btn-outline-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
+                        echo "<td><a href='tourists.php?delete=". $tourist['tourist_id'] ."' class='btn btn-outline-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
                     }
                     echo "</tr>";
             }

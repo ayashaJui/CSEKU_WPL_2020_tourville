@@ -10,7 +10,7 @@
         return;
     }
 
-    $stmt = $pdo->query('SELECT * FROM payments');
+    $stmt = $pdo->query('SELECT * FROM payments ORDER BY payment_id DESC');
     $stmt->execute();
 
     $payments = [];
@@ -33,7 +33,7 @@
 
                 <?php
                     if(empty($payments)){
-                        echo '<h1 class="text-center pt-4">No Package Found</h1>';
+                        echo '<h1 class="text-center pt-4">No Payment Found</h1>';
                     }else{
                 ?>
 
@@ -46,18 +46,19 @@
                                     <th>Tourist Name</th>
                                     <th>Package Name</th>
                                     <th>Agency Name</th>
-                                    <th>Card Holder Name</th>
-                                    <th>Card Number</th>
-                                    <th>Expire Date</th>
+                                    <th>Name on Card</th>
                                     <th>Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Transaction ID</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                             <?php
+                                $i = 1;
                                 foreach($payments as $payment){
                                     echo '<tr>';
-                                        echo '<td>'. $payment['payment_id'] .'</td>';
+                                        echo '<td>'. $i++ .'</td>';
 
                                         //read tourist name
                                         $tourist = readTourist($payment['tourist_id']);
@@ -72,9 +73,9 @@
                                         echo '<td><a href="../agency.php?agency_id='. $payment['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
 
                                         echo '<td>'. $payment['card_name'] .'</td>';
-                                        echo '<td>'. $payment['card_number'] .'</td>';
-                                        echo '<td>'. $payment['expire_date'] .'</td>';
-                                        echo '<td>'. $payment['amount'] .'</td>';
+                                        echo '<td>'. strtoupper($payment['currency']) ." ". $payment['amount'] .'</td>';
+                                        echo '<td>'. ucwords($payment['payment_status']) .'</td>';
+                                        echo '<td>'. $payment['txn_id'] .'</td>';
                                         echo '<td>'. $payment['date'] .'</td>';
                                     echo '</tr>';
                                 }

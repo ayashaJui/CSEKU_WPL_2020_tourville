@@ -9,7 +9,15 @@
 ?>
 
 <div class="my-5">
-    <img src="images/<?php echo $tourist['profile_image']; ?>" width="200" class="rounded float-right" alt="<?php echo $tourist['tourist_username']; ?>">
+    <?php
+        $profile_img = '';
+        if(!empty($tourist['profile_image'])){
+            $profile_img = $tourist['profile_image'];
+        }else{
+            $profile_img = 'default_user.png';
+        }
+    ?>
+    <img src="images/<?php echo $profile_img; ?>" width="200" class="rounded float-right" alt="<?php echo $tourist['tourist_username']; ?>">
 </div>
 <div class="lead py-5 col-sm-8">
 

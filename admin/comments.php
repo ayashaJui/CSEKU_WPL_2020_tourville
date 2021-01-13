@@ -8,7 +8,7 @@
         return;
     }
 
-    $stmt = $pdo->query('SELECT * FROM comments');
+    $stmt = $pdo->query('SELECT * FROM comments ORDER BY comment_status DESC');
     $stmt->execute();
     $comments = [];
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -91,13 +91,14 @@
                             </thead>
                             <tbody>
                             <?php
+                                $i = 1;
                                 foreach($comments as $comment){
                                     if($comment['comment_status'] == 'unpublished'){
                                         echo '<tr class="table-warning">';
                                     }else{
                                         echo '<tr>';
                                     }
-                                        echo '<td>'. $comment['comment_id'] .'</td>';
+                                        echo '<td>'. $i++ .'</td>';
 
                                         $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_id = :tourist_id');
                                         $stmt->execute([':tourist_id' => $comment['tourist_id']]);
@@ -105,7 +106,7 @@
 
                                         echo '<td>'. $tourist['tourist_firstname'] .' '. $tourist['tourist_lastname'] .'</td>';
                                         echo '<td>'. $tourist['tourist_email'] .'</td>';
-                                        echo '<td>'. $comment['content'] .'</td>';
+                                        echo '<td>'. substr($comment['content'], 0, 40) .' .....</td>';
 
                                         $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
                                         $stmt->execute([':package_id' => $comment['package_id']]);
@@ -120,9 +121,16 @@
                                         echo '<td><a href="../agency.php?agency_id='. $comment['agency_id'] .'">'. $agency['agency_name'] .'</a></td>';
                                         echo '<td>'. ucwords($comment['comment_status']) .'</td>';
                                         echo '<td>'. $comment['comment_date'] .'</td>';
+
+                                    if($comment['comment_status'] == 'unpublished'){
+                                        echo '<td><a href="comments.php?publish='. $comment['comment_id'] .'" class="btn btn-success mt-1">Publish</a></td>';
+                                        echo '<td><a href="comments.php?unpublish='. $comment['comment_id'] .'" class="btn btn-secondary mt-1">Unpublish</a></td>';
+                                        echo '<td><a href="comments.php?delete='. $comment['comment_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                                    }else{
                                         echo '<td><a href="comments.php?publish='. $comment['comment_id'] .'" class="btn btn-outline-success mt-1">Publish</a></td>';
                                         echo '<td><a href="comments.php?unpublish='. $comment['comment_id'] .'" class="btn btn-outline-secondary mt-1">Unpublish</a></td>';
-                                        echo '<td><a href="comments.php?delete='. $comment['comment_id'] .'" class="btn btn-outline-danger mt-1">Delete</a></td>';
+                                        echo '<td><a href="comments.php?delete='. $comment['comment_id'] .'" class="btn btn-outline-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                                    }
                                     echo '</tr>';
                                 }
                             ?>

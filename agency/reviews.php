@@ -12,7 +12,7 @@
     if(isset($_SESSION['agency_id'])){
         $agency_id = $_SESSION['agency_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status');
+        $stmt = $pdo->prepare('SELECT * FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status ORDER BY review_id DESC');
         $stmt->execute([':agency_id'        => $agency_id,
                         ':review_status'    => 'published']);
         $reviews = [];
@@ -68,9 +68,10 @@
                         <tbody>
 
                         <?php
+                            $i = 1;
                             foreach($reviews as $review){
                                 echo '<tr>';
-                                    echo '<td>'. $review['review_id'] .'</td>';
+                                    echo '<td>'. $i++ .'</td>';
 
                                     $tourist = readTourist($review['tourist_id']);
                                     echo '<td>'. ucwords($tourist['tourist_firstname']) .' '. ucwords($tourist['tourist_lastname']) .'</td>';

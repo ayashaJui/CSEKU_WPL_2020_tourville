@@ -13,7 +13,7 @@
         $agency_id = $_SESSION['agency_id'];
 
         //Booking Read Query
-        $stmt = $pdo->prepare('SELECT * FROM bookings WHERE agency_id = :agency_id');
+        $stmt = $pdo->prepare('SELECT * FROM bookings WHERE agency_id = :agency_id ORDER BY booking_id DESC');
         $stmt->execute([':agency_id' => $agency_id]);
         $bookings = [];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -115,6 +115,7 @@
                             <tbody>
 
                             <?php
+                                $i = 1;
                                 foreach($bookings as $booking){
                                     if($booking['booking_status'] == 'pending'){
                                         echo '<tr class="table-warning">';
@@ -123,7 +124,7 @@
                                     }else{
                                         echo '<tr>';
                                     }
-                                            echo '<td>'. $booking['booking_id'] .'</td>';
+                                            echo '<td>'. $i++ .'</td>';
                                             echo '<td>'. $booking['tourist_firstname'] .' '. $booking['tourist_lastname'] .'</td>';
                                             echo '<td>'. $booking['tourist_email'] .'</td>';
                                             echo '<td>'. $booking['tourist_contact'] .'</td>';

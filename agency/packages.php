@@ -27,7 +27,7 @@
                 ?>
                 </h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Package Details</li>
+                    <li class="breadcrumb-item active">Package Details & Dates</li>
                 </ol>
                 <?php
                     if(isset($_GET['page'])){

@@ -9,7 +9,7 @@
         return;
     }
 
-    $stmt = $pdo->query('SELECT * FROM reviews');
+    $stmt = $pdo->query('SELECT * FROM reviews ORDER BY review_status DESC');
     $stmt->execute();
 
     $reviews = [];
@@ -93,14 +93,14 @@
                             </thead>
                             <tbody>
                             <?php
-
+                            $i = 1;
                             foreach($reviews as $review){
                                 if($review['review_status'] == 'unpublished'){
                                     echo '<tr class="table table-warning">';
                                 }else{
                                     echo '<tr>';
                                 }
-                                    echo '<td>'. $review['review_id'] .'</td>';
+                                    echo '<td>'. $i++ .'</td>';
                                     
                                     //read tourist name
                                     $tourist = readTourist($review['tourist_id']);
@@ -116,9 +116,15 @@
                                     echo '<td>'. ucwords($review['review_status']) .'</td>';
                                     echo '<td>'. $review['review_date'] .'</td>';
 
+                                if($review['review_status'] == 'unpublished'){
+                                    echo '<td><a href="reviews.php?publish='. $review['review_id'] .'" class="btn btn-success mt-1">Publish</a></td>';
+                                    echo '<td><a href="reviews.php?unpublish='. $review['review_id'] .'" class="btn btn-secondary mt-1">Unpublish</a></td>';
+                                    echo '<td><a href="reviews.php?delete='. $review['review_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                                }else{
                                     echo '<td><a href="reviews.php?publish='. $review['review_id'] .'" class="btn btn-outline-success mt-1">Publish</a></td>';
                                     echo '<td><a href="reviews.php?unpublish='. $review['review_id'] .'" class="btn btn-outline-secondary mt-1">Unpublish</a></td>';
-                                    echo '<td><a href="reviews.php?delete='. $review['review_id'] .'" class="btn btn-outline-danger mt-1">Delete</a></td>';
+                                    echo '<td><a href="reviews.php?delete='. $review['review_id'] .'" class="btn btn-outline-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
+                                }
                                 echo '</tr>';
                             }
 

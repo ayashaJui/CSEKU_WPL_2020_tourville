@@ -89,7 +89,7 @@
     ?>
 
     <form action="" method="post" enctype="multipart/form-data" class="col-md-8">
-        <div class="form-group pb-2">
+        <div class="form-group p-2">
             <label for="package_name">Package Name</label>
             <input type="text" class="form-control" id="" name="package_name">
         </div>

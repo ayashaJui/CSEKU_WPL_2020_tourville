@@ -16,7 +16,7 @@
             //contact no validation
             $contact = '';
             if(!empty($employee_contact)){
-                $pattern = "/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/";
+                $pattern = "/(^(\+88|0088)?(01){1}[23456789]{1}(\d){8})$/";
                 
                 if(!preg_match($pattern, $employee_contact)){
                     $_SESSION['error'] = 'Invalid Contact Info';
@@ -44,6 +44,7 @@
                                 ':employee_address'     => $employee_address,
                                 ':role'                 => $role,
                                 ':date'                 => $date]);
+                                
                 $_SESSION['success'] = 'New Employee Added';
                 header('Location: employees.php');
                 return;
@@ -61,8 +62,8 @@
     ?>
     
     <form action="" method="post" class="col-md-8">
-        <div class="form-group pb-2">
-            <label for="employee_firstname">Employee Firstname</label>
+        <div class="form-group p-2">
+            <label for="employee_firstname">Employee's Firstname</label>
             <input type="text" class="form-control" id="" name="employee_firstname">
         </div>
         <div class="form-group p-2">

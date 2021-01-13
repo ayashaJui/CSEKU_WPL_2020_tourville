@@ -20,17 +20,11 @@
             height: 50vh;
         }
 
-        .star-active {
-        color: #fbc02d;
-        }
-
-        .star-active:hover {
-        color: #f9a825;
-        cursor: pointer;
-        }
-
-        .star-inactive {
-        color: #cfd8dc;
+        .effect:hover{
+            box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            transition: box-shadow 0.2s ease-in-out;
         }
 
     </style>

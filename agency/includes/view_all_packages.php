@@ -3,7 +3,7 @@
     if($_SESSION['agency_id']){
         $agency_id = $_SESSION['agency_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM packages WHERE agency_id = :agency_id');
+        $stmt = $pdo->prepare('SELECT * FROM packages WHERE agency_id = :agency_id ORDER BY package_name');
         $stmt->execute([':agency_id' => $agency_id]);
         $packages = [];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -89,13 +89,15 @@
             </thead>
             <tbody>
             <?php
-                foreach($packages as $package){
+                //$i = 1;
+                foreach($packages as $key => $package){
                     if($package['package_status'] == 'unavailable'){
                         echo '<tr class="table-warning">';
                     }else{
                         echo '<tr>';
                     }
-                            echo '<td>'. $package['package_id'] .'</td>';
+                            // echo '<td>'. $package['package_id'] .'</td>';
+                            echo '<td>'. ++$key .'</td>';
                             echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
                             echo '<td>'. $package['location'] .'</td>';
                             echo '<td>'. $package['budget_price'] .'(Budget)<br>

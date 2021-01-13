@@ -181,7 +181,7 @@
 
     <?php
       if(empty($top_agencies)){
-        echo '<h1 class="text-center pt-4">No Agency Found</h1>';
+        echo '<h1 class="text-center pt-4 mx-auto">No Agency Found</h1>';
       }else{
         foreach($top_agencies as $top_agency){
           $agency = readAgency($top_agency['agency_id']);

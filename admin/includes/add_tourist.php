@@ -1,5 +1,4 @@
 <?php
-
     //Tourist Insert Query...Added by Admin
     if(isset($_POST['create_tourist'])){
         $username   = htmlentities($_POST['tourist_username']);
@@ -11,6 +10,12 @@
         $date       = date("y.m.d");
 
         $password   = htmlentities($_POST['tourist_password']);
+
+        //Create a Stripe Customer with every 
+        $customer = $stripe->customers->create([
+            'name'  => $firstname." ".$lastname,
+            'email' => $email 
+        ]);
 
         //Empty Field Validation
         if($username == '' || $firstname == '' || $lastname == '' || $email == '' || $password == ''){
@@ -58,9 +63,10 @@
             return;
         }
         else{
-            $stmt = $pdo->prepare('INSERT INTO tourists(tourist_username, tourist_firstname, tourist_lastname, tourist_email, tourist_password, profile_image, tourist_contact, tourist_address, tourist_status, date) VALUES(:tourist_username, :tourist_firstname, :tourist_lastname, :tourist_email, :tourist_password, :profile_image, :tourist_contact, :tourist_address, :tourist_status, :date)');
+            $stmt = $pdo->prepare('INSERT INTO tourists(tourist_stripe, tourist_username, tourist_firstname, tourist_lastname, tourist_email, tourist_password, profile_image, tourist_contact, tourist_address, tourist_status, date) VALUES(:tourist_stripe, :tourist_username, :tourist_firstname, :tourist_lastname, :tourist_email, :tourist_password, :profile_image, :tourist_contact, :tourist_address, :tourist_status, :date)');
 
-            $stmt->execute([':tourist_username'    => $username,
+            $stmt->execute(['tourist_stripe'       => $customer->id,
+                            ':tourist_username'    => $username,
                             ':tourist_firstname'   => $firstname,
                             ':tourist_lastname'    => $lastname,
                             ':tourist_email'       => $email,

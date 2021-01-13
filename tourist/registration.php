@@ -1,6 +1,12 @@
 <?php
     include '../includes/db.php';
     include '../layouts/header.php';
+    require '../vendor/autoload.php';
+
+    // Stripe API Key
+    $stripe = new \Stripe\StripeClient(
+    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
+    );
 
     //Tourist Insert Query.... Tourist Registration
     if(isset($_POST['tourist_register'])){
@@ -13,6 +19,12 @@
         $date       = date("y.m.d");
 
         $password   = htmlentities($_POST['tourist_password']);
+
+        //Create a Stripe Customer with every 
+        $customer = $stripe->customers->create([
+            'name'  => $firstname." ".$lastname,
+            'email' => $email 
+        ]);
 
          //uploading image in images folder
         $profile_img = $_FILES['profile_image']['name'];
@@ -65,23 +77,20 @@
             return;
         }
         else{
-            $stmt = $pdo->prepare('INSERT INTO tourists(tourist_username, tourist_firstname, tourist_lastname, tourist_email, tourist_password, profile_image, tourist_contact, tourist_address, tourist_status, date) VALUES(:tourist_username, :tourist_firstname, :tourist_lastname, :tourist_email, :tourist_password, :profile_image, :tourist_contact, :tourist_address, :tourist_status, :date)');
+            $stmt = $pdo->prepare('INSERT INTO tourists(tourist_stripe, tourist_username, tourist_firstname, tourist_lastname, tourist_email, tourist_password, profile_image, tourist_contact, tourist_address, tourist_status, date) VALUES(:tourist_stripe, :tourist_username, :tourist_firstname, :tourist_lastname, :tourist_email, :tourist_password, :profile_image, :tourist_contact, :tourist_address, :tourist_status, :date)');
 
-            $stmt->execute([':tourist_username'    => $username,
+            $stmt->execute([':tourist_stripe'      => $customer->id,
+                            ':tourist_username'    => $username,
                             ':tourist_firstname'   => $firstname,
                             ':tourist_lastname'    => $lastname,
                             ':tourist_email'       => $email,
                             ':tourist_password'    => $password,
-                            ':profile_image'       => '',
+                            ':profile_image'       => $profile_img,
                             ':tourist_contact'     => $tourist_contact,
                             ':tourist_address'     => $address,
                             ':tourist_status'      => 'approved',
                             ':date'                => $date]);
 
-            // $_SESSION['tourist_login']      = "Tourist";
-            // // $_SESSION['tourist_id']         = $tourist['tourist_id'];
-            // $_SESSION['tourist_email']      = $email;
-            // $_SESSION['tourist_status']     = 'approved';
             header('Location: ../index.php');
             return;
         }

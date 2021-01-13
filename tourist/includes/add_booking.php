@@ -122,22 +122,12 @@
     </div>
 
     <div class="col-sm-4">
-        <div class="card mt-5">
+        <div class="card mt-5 effect">
             <div class="container">
                 <h2 class="p-2">Package Info</h2>
                 <div>
                     <h3 class="font-italic p-2"><a href="package.php?package_id=<?php echo $package_id; ?>"> <?php echo $package['package_name']; ?></a></h3>
                     <h5 class="font-italic text-info" style="font-size: 1rem;"><i class="fas fa-map-marker-alt"></i> <?php echo $package['location']. ',' .$package['country']; ?></h5>
-                </div>
-                <div>
-                    <p class="float-right" style="position: relative; top: -30px; font-size: .8rem;">
-                        <span class="text-muted mr-1">4.0</span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-active"></span>
-                        <span class="fa fa-star star-inactive"></span>
-                    </p>
                 </div>
                 <hr>
 

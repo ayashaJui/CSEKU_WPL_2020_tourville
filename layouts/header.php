@@ -20,6 +20,9 @@
 
     <!-- CK Editor -->
     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+
+    <!-- Stripe CDN -->
+    <script src="https://js.stripe.com/v3/"></script>
     
 
     <title>Tourville</title>

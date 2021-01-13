@@ -79,14 +79,14 @@
 
 <br>
 <div class="container">
-    <h2 class="p-2 pb-5">Add Agency</h2>
+    <h2 class="p-2 pb-4">Add Agency</h2>
 
     <?php
         include '../includes/flash_msg.php';
     ?>
     
     <form action="" method="post" class="col-md-8">
-        <div class="form-group pb-2">
+        <div class="form-group p-2">
             <label for="agency_name">Agency Name</label>
             <input type="text" class="form-control" id="" name="agency_name">
         </div>

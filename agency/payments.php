@@ -13,7 +13,7 @@
         $agency_id = $_SESSION['agency_id'];
 
         //Payment Read Query
-        $stmt = $pdo->prepare('SELECT * FROM payments WHERE agency_id = :agency_id');
+        $stmt = $pdo->prepare('SELECT * FROM payments WHERE agency_id = :agency_id ORDER BY tour_status DESC');
         $stmt->execute([':agency_id' => $agency_id]);
         $payments = [];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -96,12 +96,12 @@
                                     <th>ID</th>
                                     <th>Package Name</th>
                                     <th>Booked By</th>
-                                    <th>Card Holder Name</th>
-                                    <th>Card Number</th>
-                                    <th>Expiration Date</th>
-                                    <th>Payment Status</th>
-                                    <th>Date</th>
+                                    <th>Name on Card</th>
                                     <th>Amount</th>
+                                    <th>Payment Type</th>
+                                    <th>Payment Status</th>
+                                    <th>Transaction ID</th>
+                                    <th>Date</th>                                 
                                     <th>Tour Status</th>
                                     <th>Travelling</th>
                                     <th>Completed</th>
@@ -111,6 +111,7 @@
                             <tbody>
 
                             <?php
+                                $i = 1;
                                 foreach($payments as $payment){
                                     if($payment['tour_status'] == 'travelling'){
                                         echo '<tr class="table-warning">';
@@ -119,7 +120,7 @@
                                     }else{
                                         echo '<tr>';
                                     }
-                                            echo '<td>'. $payment['payment_id'] .'</td>';
+                                            echo '<td>'. $i++ .'</td>';
                                             
                                             //Package Name Read Query
                                             $package = readPackage($payment['package_id']);
@@ -132,18 +133,18 @@
 
                                             echo '<td>'. ucwords($booking['tourist_firstname']) .' '. ucwords($booking['tourist_lastname']) .'</td>';
                                             echo '<td>'. $payment['card_name'] .'</td>';
-                                            echo '<td>'. $payment['card_number'] .'</td>';
-                                            echo '<td>'. $payment['expire_date'] .'</td>';
+                                            echo '<td>'. strtoupper($payment['currency']) ." ". $payment['amount'] .'</td>';
 
-                                        if($payment['payment_status'] == 'book_price'){
+                                        if($payment['payment_type'] == 'book_price'){
                                             echo '<td>Booking Price</td>';
-                                        }elseif($payment['payment_status'] == 'half'){
+                                        }elseif($payment['payment_type'] == 'half'){
                                             echo '<td>Half Paid</td>';
                                         }else{
                                             echo '<td>Full Paid</td>';
                                         }
+                                            echo '<td>'. ucwords($payment['payment_status']) .'</td>';
+                                            echo '<td>'. $payment['txn_id'] .'</td>';
                                             echo '<td>'. $payment['date'] .'</td>';
-                                            echo '<td>'. $payment['amount'] .'</td>';
                                             echo '<td>'. ucwords($payment['tour_status']) .'</td>';
 
                                         if($payment['tour_status'] == 'travelling' || $payment['tour_status'] == 'completed'){

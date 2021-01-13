@@ -9,7 +9,7 @@
         return;
     }
 
-    $stmt = $pdo->query('SELECT * FROM packages');
+    $stmt = $pdo->query('SELECT * FROM packages ORDER BY agency_id');
     $stmt->execute();
 
     $packages = [];
@@ -53,13 +53,14 @@
                             </thead>
                             <tbody>
                             <?php
+                                $i = 1;
                                 foreach($packages as $package){
                                     if($package['package_status'] == 'unavailable'){
                                         echo '<tr class="table-warning">';
                                     }else {
                                         echo '<tr>';
                                     }
-                                        echo '<td>'. $package['package_id'] .'</td>';
+                                        echo '<td>'. $i++ .'</td>';
                                         echo '<td><a href="../package.php?package_id='. $package['package_id'] .'">'. $package['package_name'] .'</a></td>';
 
                                         $agency_id = $package['agency_id'];
@@ -80,9 +81,9 @@
                                         echo '<td>'. $comment_count .'</td>';
 
                                     if($package['package_status'] == 'unavailable'){
-                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-danger mt-1">Delete</a></td>';
+                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
                                     }else{
-                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-outline-danger mt-1">Delete</a></td>';
+                                        echo '<td><a href="packages.php?delete='. $package['package_id'] .'" class="btn btn-outline-danger mt-1"><i class="fas fa-trash-alt"></i></a></td>';
                                     }
                                     echo '</tr>';
                                 }

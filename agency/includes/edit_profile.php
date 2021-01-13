@@ -44,7 +44,7 @@
                  //contact no validation
                 $contact = '';
                 if(!empty($agency_contact)){
-                    $pattern = "/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/";
+                    $pattern = "/(^(\+88|0088)?(01){1}[23456789]{1}(\d){8})$/";
                     if(!preg_match($pattern, $agency_contact)){
                         $_SESSION['error'] = 'Invalid Contact Info';
                         header("Location: profile.php?page=edit_profile&edit=". $agency_id);

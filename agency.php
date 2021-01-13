@@ -134,7 +134,7 @@
 
 <!-- Reviews -->
 <?php
-    $stmt = $pdo->prepare('SELECT * FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status');
+    $stmt = $pdo->prepare('SELECT * FROM reviews WHERE agency_id = :agency_id AND review_status = :review_status ORDER BY review_id DESC');
     $stmt->execute([':agency_id'    => $_GET['agency_id'],
                     ':review_status' => 'published']);
     $reviews = [];
@@ -146,11 +146,11 @@
 ?>
 
 <div class="container review-content">
-    <h5 class="mt-5 pl-3">Ratings & Comments</h5>
+    <h5 class="mt-5 pl-3">Ratings & Comments (<?php echo $total_person = $stmt->rowCount(); ?>)</h5>
     <div class="container-fluid px-1 py-5 mx-auto">
         <div class="row justify-content-center">
             <div class="col-xl-7 col-lg-8 col-md-10 col-12 text-center mb-5">
-                <div class="card">
+                <div class="card effect">
                     <div class="row justify-content-left d-flex">
                         <div class="col-md-4 d-flex flex-column">
                             <div class="rating-box">
@@ -179,7 +179,13 @@
                                         $rate1++;
                                     }
                                 }
-                                $avg_rate = $total_rate / $total_person;
+
+                                if($total_person != 0){
+                                    $avg_rate = $total_rate / $total_person;
+                                }else{
+                                    $avg_rate = 0;
+                                }
+                                
                             ?>
 
                                 <h1 class="pt-4"><?php echo number_format((float)$avg_rate, 1, '.', ''); ?></h1>
@@ -270,10 +276,17 @@
                 }else{
                     foreach($reviews as $review){
                         $tourist = readTourist($review['tourist_id']);
+
+                        $profile_img = '';
+                        if(!empty($tourist['profile_image'])){
+                            $profile_img = $tourist['profile_image'];
+                        }else{
+                            $profile_img = 'default_user.png';
+                        }
             ?>
-                <div class="card">
+                <div class="card effect">
                     <div class="row d-flex">
-                        <div class=""> <img class="profile-pic" src="images/<?php echo $tourist['profile_image'] ?>"></div>
+                        <div class=""> <img class="profile-pic" src="images/<?php echo $profile_img; ?>"></div>
                         <div class="d-flex flex-column">
                             <h3 class="mt-2 mb-0"><?php echo ucwords($tourist['tourist_firstname']) .' '. ucwords($tourist['tourist_lastname']); ?></h3>
                             <div>

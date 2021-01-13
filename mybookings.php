@@ -12,7 +12,7 @@
     if(isset($_SESSION['tourist_email'])){
         $tourist_id = $_SESSION['tourist_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM bookings WHERE tourist_id = :tourist_id');
+        $stmt = $pdo->prepare('SELECT * FROM bookings WHERE tourist_id = :tourist_id ORDER BY booking_id DESC');
         $stmt->execute([':tourist_id' => $tourist_id]);
         $bookings = [];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -86,7 +86,8 @@
             </tr>
         </thead>
         <tbody>
-        <?php 
+        <?php
+            $i = 1;
             foreach($bookings as $booking){
                 //Reading Payment data
                 $stmt = $pdo->prepare('SELECT * FROM payments WHERE booking_id = :booking_id');
@@ -100,7 +101,7 @@
                 }else{
                     
                 }
-                    echo '<td>'. $booking['booking_id'] .'</td>';
+                    echo '<td>'. $i++ .'</td>';
 
                     //Package Name Reading From packages Table
                     $package = readPackage($booking['package_id']);
@@ -134,14 +135,14 @@
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary">Pay</a></td>';
                     }elseif($booking['booking_status'] == 'confirm' && !empty($payment)){
                         // echo '<td><a href="#" class="btn btn-primary" id="payment_id" data-toggle="modal" data-target="#exampleModal">Paid</a></td>';
-                        echo '<td class="font-weight-bold">Paid</td>';
+                        echo '<td class="font-weight-bold"><a href="success.php?payment_id='. $payment['payment_id'] .'">Paid</a></td>';
                     }else {
                         echo '<td><a href="payment.php?booking_id='. $booking['booking_id'] .'" class="btn btn-primary disabled">Pay</a></td>';
                     }
 
                     //read package date data
                     $date = readPackageDates($package['package_id']);
-                    if(!empty($payment) && $payment['tour_status'] == 'completed'){
+                    if(!empty($payment) && $payment['tour_status'] !== 'not started'){
                         echo '<td></td>';
                         echo '<td></td>';
                         echo '<td></td>';

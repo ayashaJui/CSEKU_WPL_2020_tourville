@@ -2,6 +2,12 @@
     include '../includes/db.php';
     include 'layouts/admin_header.php';
     include 'layouts/admin_navbar.php';
+    require '../vendor/autoload.php';
+
+    // Stripe API Key
+    $stripe = new \Stripe\StripeClient(
+    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
+    );
 
     if(empty($_SESSION['admin_login']) || $_SESSION['admin_login'] == ''){
         header('Location: index.php');

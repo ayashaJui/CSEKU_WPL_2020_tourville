@@ -1,8 +1,10 @@
 <?php
     include 'includes/db.php';
+    include 'includes/functions.php';
     $page = 'packages';
     include 'layouts/header.php';
     include 'layouts/navbar.php';
+
 
     if(isset($_GET['booking_id'])){
         $booking_id = $_GET['booking_id'];
@@ -12,9 +14,7 @@
         $booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $package_id = $booking['package_id'];
-        $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-        $stmt->execute([':package_id' => $package_id]);
-        $package = $stmt->fetch(PDO::FETCH_ASSOC);
+        $package = readPackage($booking['package_id']);
 
         $tourist_id     = $booking['tourist_id'];
         $package_id     = $booking['package_id'];
@@ -33,50 +33,11 @@
             $half   = $total / 2;
             $book   = ceil(($package['booking_percentage'] / 100) * $total);
         }
-
-        if(isset($_POST['pay'])){
-            $payment_status = $_POST['payment'];
-            $card_name      = htmlentities($_POST['card_name']);
-            $card_number    = htmlentities($_POST['card_number']);
-            $expire_date    = htmlentities($_POST['expire_date']);
-            $date           = date("y.m.d");
-
-            $amount = '';
-            if($payment_status == 'book_price'){
-                $amount = $book;
-            }elseif($payment_status == 'half'){
-                $amount = $half;
-            }else{
-                $amount = $total;
-            }
-            if(empty($card_name) || empty($card_number) || empty($expire_date) || empty($amount)){
-                $_SESSION['error'] = 'Please Fill the Form';
-                header('Location: payment.php?booking_id='. $booking_id);
-                return;
-            }else{
-                $stmt = $pdo->prepare('INSERT INTO payments(booking_id, package_id, agency_id, tourist_id, amount, payment_status, card_name, card_number, expire_date, tour_status, date) VALUES(:booking_id, :package_id,  :agency_id, :tourist_id, :amount, :payment_status, :card_name, :card_number, :expire_date, :tour_status, :date)');
-
-                $stmt->execute([':booking_id'       => $booking_id,
-                                ':package_id'       => $package_id,
-                                ':agency_id'        => $agency_id,
-                                ':tourist_id'       => $tourist_id,
-                                ':amount'           => $amount,
-                                ':payment_status'   => $payment_status,
-                                ':card_name'        => $card_name,
-                                ':card_number'      => $card_number,
-                                ':expire_date'      => $expire_date,
-                                ':tour_status'      => 'not stared',
-                                ':date'             => $date]);
-
-                $_SESSION['success'] = "Thank You For Trusting Us..";
-                header('Location: mybookings.php');
-                return;
-            }
-        }
     }
 
 ?>
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <style>
         .package {
             background-image: url("images/view/payment.jpg");
@@ -86,19 +47,13 @@
             height: 50vh;
         }
 
-        .star-active {
-            color: #fbc02d;
+        .effect:hover{
+            box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -webkit-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            -moz-box-shadow: 4px 4px 15px 0px rgba(0,0,0,0.44);
+            transition: box-shadow 0.2s ease-in-out;
         }
-
-        .star-active:hover {
-            color: #f9a825;
-            cursor: pointer;
-        }
-
-        .star-inactive {
-            color: #cfd8dc;
-        }
-
+        
     </style>
     
 </head>
@@ -116,21 +71,23 @@
         <?php
             include 'includes/flash_msg.php'
         ?>
-            <form action="" method="post">
+            <form action="charge.php?booking_id=<?php if(isset($_GET['booking_id'])){echo $_GET['booking_id'];} ?>" method="post" id="payment-form">
                 <div class="my-5">
                     <h2 class="p-2">Your Credit or Debit Card Information</h2>
                     <div class="form-group p-2">
-                        <label for="card_name">Card Holder Name</label>
-                        <input type="text" name="card_name" id="" class="form-control">
+                        <label for="card_name">Name on Card</label>
+                        <input type="text" name="card_name" id="" class="form-control StripeElement">
                     </div>
+
                     <div class="form-group p-2">
-                        <label for="card_number">Card Number</label>
-                        <input type="number" name="card_number" id="" class="form-control">
+                        <label for="">Card Information</label>
+                        <div id="card-element" class="form-control">
+                        <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" role="alert"></div>
                     </div>
-                    <div class="form-group p-2">
-                        <label for="expire_date">Expiration Date</label>
-                        <input type="date" name="expire_date" id="" class="form-control">
-                    </div>
+
                     <div class="form-group p-2">
                         <input type="radio" name="payment" id="" value="book_price" checked>
                         <label for="book_price">Booking Price: <span class="ml-2"><?php echo $book; ?>/-</span></label><br>
@@ -140,7 +97,7 @@
                         <label for="full">Full Payment: <span class="ml-2"><?php echo $total; ?>/-</span></label><br>
                     </div>
                     <div class="form-group p-2">
-                        <input type="submit" value="Pay" name="pay" class="btn btn-primary">
+                        <button class="btn btn-primary">Submit Payment</button>
 
                         <a href="mybookings.php" class="btn btn-secondary float-right">Cancel</a>
                     </div>
@@ -149,15 +106,12 @@
         </div>
 
         <div class="col-sm-4">
-            <div class="card mt-5">
+            <div class="card mt-5 effect">
                 <div class="container font-italic">
 
                 <?php
                     $package_id = $booking['package_id'];
-
-                    $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-                    $stmt->execute([':package_id' => $package_id]);
-                    $package = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $package = readPackage($package_id);
                 ?>
 
                     <h3 class="py-2"><a href="package.php?package_id=<?php echo $booking['package_id']; ?>"> <?php echo $package['package_name']; ?></a></h3>
@@ -166,10 +120,7 @@
 
                     <?php
                         $agency_id = $booking['agency_id'];
-
-                        $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-                        $stmt->execute([':agency_id' => $agency_id]);
-                        $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $agency = readAgency($agency_id);
                     ?>
                         Arranged by: <br> <a href="agency.php?agency_id=<?php echo $booking['agency_id']; ?>" class="mr-3"><?php echo $agency['agency_name']; ?></a>
                     </div>
@@ -218,6 +169,7 @@
 <footer class='text-center p-1 mt-5' style="background: #E9EAEC;">
     <h6>tourism@tourville &copy;2020</h6>
 </footer>
+<script src="js/stripe.js"></script>
 
 <?php
     include 'layouts/footer.php';

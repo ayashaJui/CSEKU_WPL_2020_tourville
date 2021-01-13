@@ -8,9 +8,9 @@
     if(isset($_GET['package_id'])){
         $package_id = $_GET['package_id'];
 
-        $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
-        $stmt->execute([':package_id'  => $package_id]);
-        $package = $stmt->fetch(PDO::FETCH_ASSOC);
+        // $stmt = $pdo->prepare('SELECT * FROM packages WHERE package_id = :package_id');
+        // $stmt->execute([':package_id'  => $package_id]);
+        $package = readPackage($package_id);
     }
 ?>
 
@@ -18,6 +18,15 @@
 <head>
     <link rel="stylesheet" href="css/package.css">
     <script src="js/script.js"></script>
+
+    <style>
+        .effect:hover {
+            box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.44);
+            -webkit-box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.44);
+            -moz-box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.44);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+    </style>
 </head>
 
 <br>
@@ -63,7 +72,7 @@
             <a class="nav-link gallery" href="#">Gallery</a>
         </li>
         <li class="nav-item subnav">
-            <a class="nav-link review" href="#">Reviews</a>
+            <a class="nav-link review" href="#">Comments</a>
         </li>
     </ul>
 </div>
@@ -259,27 +268,28 @@
 </div>
 
 <!-- Review -->
+<?php
+    //Read Comment
+    if(isset($_GET['package_id'])){
+        $package_id = $_GET['package_id'];
+
+        $stmt = $pdo->prepare('SELECT * FROM comments WHERE package_id = :package_id AND comment_status = :comment_status ORDER BY comment_id DESC');
+        $stmt->execute([':package_id'       => $package_id,
+                        ':comment_status'   => 'published']);
+        $comments = [];
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $comments[] = $row;
+        }
+    }
+?>
 <div class="container review-content">
-    <h5 class="mt-5">Comments</h5>
+    <h5 class="mt-5">Comments (<?php echo $count = $stmt->rowCount(); ?>)</h5>
     <div class="container-fluid px-1 pt-5 pb-3 mx-auto">
         <!-- comment -->
         <div class="row">
             <div class="col-sm-8">
 
             <?php
-                //Read Comment
-                if(isset($_GET['package_id'])){
-                    $package_id = $_GET['package_id'];
-
-                    $stmt = $pdo->prepare('SELECT * FROM comments WHERE package_id = :package_id AND comment_status = :comment_status');
-                    $stmt->execute([':package_id'       => $package_id,
-                                    ':comment_status'   => 'published']);
-                    $comments = [];
-                    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                        $comments[] = $row;
-                    }
-                }
-
                 //comment delete
                 if(isset($_GET['delete_comment'])){
                     $comment_id = $_GET['delete_comment'];
@@ -297,7 +307,7 @@
                 }else{
                     foreach($comments as $comment){
             ?>
-                <div class="card">
+                <div class="card effect">
                     <div class="row d-flex">
 
                     <?php
@@ -306,9 +316,16 @@
                         $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_id = :tourist_id');
                         $stmt->execute([':tourist_id'  => $tourist_id]);
                         $tourist = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        $profile_img = '';
+                        if(!empty($tourist['profile_image'])){
+                            $profile_img = $tourist['profile_image'];
+                        }else{
+                            $profile_img = 'default_user.png';
+                        }
                     ?>
 
-                        <div class=""> <img class="profile-pic" src="images/<?php echo $tourist['profile_image']; ?>"></div>
+                        <div class=""> <img class="profile-pic" src="images/<?php echo $profile_img; ?>"></div>
                         <div class="d-flex flex-column">
                             <h4 class="my-auto"><?php echo $tourist['tourist_firstname'] .' '. $tourist['tourist_lastname']; ?></h4>
                         </div>
