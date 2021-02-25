@@ -30,6 +30,7 @@
                 header('Location: profile.php');
                 return;
             }else{
+                $hash_password = password_hash($admin_password, PASSWORD_BCRYPT, ['cost' => 12]);
                 $stmt = $pdo->prepare('UPDATE admins SET username = :username, admin_firstname = :admin_firstname, admin_lastname = :admin_lastname, admin_email = :admin_email, admin_password = :admin_password, admin_status = :admin_status, date = :date WHERE admin_id = :admin_id');
 
                 $stmt->execute([':admin_id'         => $admin_id,
@@ -37,7 +38,7 @@
                                 ':admin_firstname'  => $admin_firstname,
                                 ':admin_lastname'   => $admin_lastname,
                                 ':admin_email'      => $admin_email,
-                                ':admin_password'   => $admin_password,
+                                ':admin_password'   => $hash_password,
                                 ':admin_status'     => $admin_status,
                                 ':date'             => $admin_date]);
                 $_SESSION['success'] = 'Profile Updated';

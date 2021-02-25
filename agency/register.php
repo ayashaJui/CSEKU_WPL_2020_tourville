@@ -58,13 +58,14 @@
             return;
         }
         else{
+            $hash_password = password_hash($agency_password, PASSWORD_BCRYPT, ['cost' => 12]);
             $stmt = $pdo->prepare('INSERT INTO agencies(agency_name, owner_firstname, owner_lastname, agency_email, agency_password, logo_image, cover_image, agency_contact, agency_address, agency_status, date) VALUES(:agency_name, :owner_firstname, :owner_lastname, :agency_email, :agency_password, :logo_image, :cover_image, :agency_contact, :agency_address, :agency_status, :date)');
 
             $stmt->execute([':agency_name'      => $agency_name,
                             ':owner_firstname'  => $owner_firstname,
                             ':owner_lastname'   => $owner_lastname,
                             ':agency_email'     => $agency_email,
-                            ':agency_password'  => $agency_password,
+                            ':agency_password'  => $hash_password,
                             ':logo_image'       => '',
                             ':cover_image'      => '',
                             ':agency_contact'   => $contact,
@@ -122,6 +123,7 @@
         </div>
     </form>
 </div>
+<br>
 
 <?php
     include 'layouts/agency_footer.php';

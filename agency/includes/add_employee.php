@@ -33,13 +33,14 @@
                 header('Location: employees.php?page=add_employee');
                 return;
             }else{
+                $hash_password = password_hash($employee_password, PASSWORD_BCRYPT, ['cost' => 12]);
                 $stmt = $pdo->prepare('INSERT INTO agency_employees(agency_id, employee_firstname, employee_lastname, employee_email, employee_password, employee_contact, employee_address, role, date) VALUES(:agency_id, :employee_firstname, :employee_lastname, :employee_email, :employee_password, :employee_contact, :employee_address, :role, :date)');
 
                 $stmt->execute([':agency_id'            => $agency_id,
                                 ':employee_firstname'   => $employee_firstname,
                                 ':employee_lastname'    => $employee_lastname,
                                 ':employee_email'       => $employee_email,
-                                ':employee_password'    => $employee_password,
+                                ':employee_password'    => $hash_password,
                                 ':employee_contact'     => $contact,
                                 ':employee_address'     => $employee_address,
                                 ':role'                 => $role,

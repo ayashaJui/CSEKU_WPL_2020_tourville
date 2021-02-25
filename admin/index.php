@@ -12,32 +12,37 @@
             return;
         }
 
-        $stmt = $pdo->prepare('SELECT * FROM admins WHERE admin_email = :admin_email AND admin_password = :admin_password');
-        $stmt->execute([':admin_email'    => $email,
-                        ':admin_password' => $password]);
+        $stmt = $pdo->prepare('SELECT * FROM admins WHERE admin_email = :admin_email');
+        $stmt->execute([':admin_email'    => $email ]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($email !== $admin['admin_email'] && $password !== $admin['admin_password']){
+        if($email !== $admin['admin_email'] ){
             //when email & password doesnot match with database
             $_SESSION['error'] = 'Info is Wrong';
             header('Location: index.php');
             return;
-        }elseif($email === $admin['admin_email'] && $password === $admin['admin_password']){
-            $_SESSION['admin_id']         = $admin['admin_id'];
-            $_SESSION['username']         = $admin['username'];
-            $_SESSION['admin_email']      = $admin['admin_email'];
-            $_SESSION['admin_status']     = $admin['admin_status'];
-            
-            
-            if($_SESSION['admin_status'] == 'unapproved'){
-                $_SESSION['error'] = 'You need Admin\'s Approval';
-                header('Location: index.php');
-                return;
+        }elseif($email === $admin['admin_email'] ){
+            if(password_verify($password, $admin['admin_password'])){
+                $_SESSION['admin_id']         = $admin['admin_id'];
+                $_SESSION['username']         = $admin['username'];
+                $_SESSION['admin_email']      = $admin['admin_email'];
+                $_SESSION['admin_status']     = $admin['admin_status'];
                 
+                
+                if($_SESSION['admin_status'] == 'unapproved'){
+                    $_SESSION['error'] = 'You need Admin\'s Approval';
+                    header('Location: index.php');
+                    return;
+                    
+                }else{
+                    $_SESSION['admin_login'] = 'admin';
+                    //when admin is in approved state
+                    header('Location: dashboard.php');
+                    return;
+                }
             }else{
-                $_SESSION['admin_login'] = 'admin';
-                //when admin is in approved state
-                header('Location: dashboard.php');
+                $_SESSION['error'] = 'Wrong Password';
+                header('Location: index.php');
                 return;
             }
         }

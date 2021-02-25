@@ -3,7 +3,7 @@
     include '../layouts/header.php';
 ?>
 
-<br><br><br><br>
+<br><br><br>
 <div class="container">
     <div class="row">
         <div class="col-sm-8 mx-auto">
@@ -40,30 +40,35 @@
             return;
         }
 
-        $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_email = :tourist_email AND tourist_password = :tourist_password');
-        $stmt->execute([':tourist_email'    => $email,
-                        ':tourist_password' => $password]);
+        $stmt = $pdo->prepare('SELECT * FROM tourists WHERE tourist_email = :tourist_email');
+        $stmt->execute([':tourist_email'    => $email ]);
         $tourist = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($email !== $tourist['tourist_email'] && $password !== $tourist['tourist_password']){
-            //when email & password doesnot match with database
+        if($email !== $tourist['tourist_email']){
+            //when email with database
             $_SESSION['error'] = 'Info is Wrong';
             header('Location: login.php');
             return;
-        }elseif($email === $tourist['tourist_email'] && $password === $tourist['tourist_password']){
-            $_SESSION['tourist_id']         = $tourist['tourist_id'];
-            $_SESSION['tourist_username']   = $tourist['tourist_username'];
-            $_SESSION['tourist_email']      = $tourist['tourist_email'];
-            $_SESSION['tourist_status']     = $tourist['tourist_status'];
+        }elseif($email == $tourist['tourist_email']){
+            if(password_verify($password, $tourist['tourist_password'])){
+                $_SESSION['tourist_id']         = $tourist['tourist_id'];
+                $_SESSION['tourist_username']   = $tourist['tourist_username'];
+                $_SESSION['tourist_email']      = $tourist['tourist_email'];
+                $_SESSION['tourist_status']     = $tourist['tourist_status'];
 
-            if($_SESSION['tourist_status'] == 'unapproved'){
-                $_SESSION['error'] = 'You need Admin\'s Approval';
-                header('Location: login.php');
-                return;
+                if($_SESSION['tourist_status'] == 'unapproved'){
+                    $_SESSION['error'] = 'You need Admin\'s Approval';
+                    header('Location: login.php');
+                    return;
+                }else{
+                    //when tourist is in approved state
+                    $_SESSION['tourist_login'] = "Tourist";
+                    header('Location: ../index.php');
+                    return;
+                }
             }else{
-                //when tourist is in approved state
-                $_SESSION['tourist_login'] = "Tourist";
-                header('Location: ../index.php');
+                $_SESSION['error'] = 'Wrong Password';
+                header('Location: login.php');
                 return;
             }
         }
@@ -73,7 +78,7 @@
 <div class="tourist-container col-sm-6 mx-auto" >
     <form action="" method="post" class=" mx-auto pt-5">
         <div class="form-group p-2">
-            <label for="tourist_email">Email address</label>
+            <label for="tourist_email">Email address</label> 
             <input type="email" class="form-control" id="" name="tourist_email">
         </div>
         <div class="form-group p-2">
@@ -104,67 +109,78 @@
         }
 
         if($agency_role == "owner"){
-            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_email = :agency_email AND agency_password = :agency_password');
-            $stmt->execute([':agency_email'    => $email,
-                            ':agency_password' => $password]);
+            $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_email = :agency_email');
+            $stmt->execute([':agency_email'    => $email ]);
             $agency = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($email !== $agency['agency_email'] && $password !== $agency['agency_password']){
+            if($email !== $agency['agency_email']){
                 //when email & password doesnot match with database
                 $_SESSION['error'] = 'Info is Wrong';
                 header('Location: login.php');
                 return;
-            }elseif($email === $agency['agency_email'] && $password === $agency['agency_password']){
-                $_SESSION['agency_id']     = $agency['agency_id'];
-                $_SESSION['agency_name']   = $agency['agency_name'];
-                $_SESSION['agency_email']  = $agency['agency_email'];
-                $_SESSION['agency_status'] = $agency['agency_status'];
+            }elseif($email === $agency['agency_email'] ){
+                if(password_verify($password, $agency['agency_password'])){
+                    $_SESSION['agency_id']     = $agency['agency_id'];
+                    $_SESSION['agency_name']   = $agency['agency_name'];
+                    $_SESSION['owner_firstname'] = $agency['owner_firstname'];
+                    $_SESSION['agency_email']  = $agency['agency_email'];
+                    $_SESSION['agency_status'] = $agency['agency_status'];
 
-                if($_SESSION['agency_status'] == 'unapproved'){
-                    $_SESSION['error'] = 'You need Admin\'s Approval';
+                    if($_SESSION['agency_status'] == 'unapproved'){
+                        $_SESSION['error'] = 'You need Admin\'s Approval';
+                        header('Location: login.php');
+                        return;
+                    }else{
+                        //when agency is in approved state
+                        $_SESSION['agency_login']  = "AgencyOwner";
+                        header('Location: ../agency');
+                        return;
+                    }
+                }else{
+                    $_SESSION['error'] = 'Wrong Password';
                     header('Location: login.php');
                     return;
-                }else{
-                //when agency is in approved state
-                $_SESSION['agency_login']  = "AgencyOwner";
-                header('Location: ../agency');
-                return;
                 }
             }
         }else{
-            $stmt = $pdo->prepare('SELECT * FROM agency_employees WHERE employee_email = :employee_email AND employee_password = :employee_password');
-            $stmt->execute([':employee_email'    => $email,
-                            ':employee_password' => $password]);
+            $stmt = $pdo->prepare('SELECT * FROM agency_employees WHERE employee_email = :employee_email');
+            $stmt->execute([':employee_email'    => $email ]);
             $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($email !== $employee['employee_email'] && $password !== $employee['employee_password']){
+            if($email !== $employee['employee_email']){
                 //when email & password doesnot match with database
                 $_SESSION['error'] = 'Info is Wrong';
                 header('Location: login.php');
                 return;
-            }elseif($email === $employee['employee_email'] && $password === $employee['employee_password']){
-                $_SESSION['employee_id']        = $employee['employee_id'];
-                $_SESSION['agency_id']          = $employee['agency_id'];
-                $_SESSION['employee_firstname'] = $employee['employee_firstname'];
-                $_SESSION['role']               = $employee['role'];
-                $_SESSION['employee_email']     = $employee['employee_email'];
+            }elseif($email === $employee['employee_email']){
+                if(password_verify($password, $employee['employee_password'])){
+                    $_SESSION['employee_id']        = $employee['employee_id'];
+                    $_SESSION['agency_id']          = $employee['agency_id'];
+                    $_SESSION['employee_firstname'] = $employee['employee_firstname'];
+                    $_SESSION['role']               = $employee['role'];
+                    $_SESSION['employee_email']     = $employee['employee_email'];
 
-                $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
-                $stmt->execute([':agency_id'    => $_SESSION['agency_id']]);
-                $agency = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $stmt = $pdo->prepare('SELECT * FROM agencies WHERE agency_id = :agency_id');
+                    $stmt->execute([':agency_id'    => $_SESSION['agency_id']]);
+                    $agency = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                $_SESSION['agency_name']    = $agency['agency_name'];
-                $_SESSION['agency_status']  = $agency['agency_status'];
+                    $_SESSION['agency_name']    = $agency['agency_name'];
+                    $_SESSION['agency_status']  = $agency['agency_status'];
 
-                if($_SESSION['agency_status'] == 'unapproved'){
-                    $_SESSION['error'] = 'You need Admin\'s Approval';
+                    if($_SESSION['agency_status'] == 'unapproved'){
+                        $_SESSION['error'] = 'You need Admin\'s Approval';
+                        header('Location: login.php');
+                        return;
+                    }else{
+                    //when agency is in approved state
+                    $_SESSION['agency_login']  = "AgencyEmployee";
+                    header('Location: ../agency');
+                    return;
+                    }
+                }else{
+                    $_SESSION['error'] = 'Wrong Password';
                     header('Location: login.php');
                     return;
-                }else{
-                //when agency is in approved state
-                $_SESSION['agency_login']  = "AgencyEmployee";
-                header('Location: ../agency');
-                return;
                 }
             }
         }

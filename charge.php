@@ -1,12 +1,11 @@
 <?php
+    include "config/api_key.php";
     include 'includes/db.php';
     include 'includes/functions.php';
     require 'vendor/autoload.php';
 
     // Stripe API Key
-    $stripe = new \Stripe\StripeClient(
-    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
-    );
+    $stripe = new \Stripe\StripeClient(STRIPE_KEY);
 
     $stripeToken = $_POST['stripeToken'];
 

@@ -7,7 +7,7 @@
         <li class="nav-item dropdown my-2 mx-2">
             <a class="nav-link dropdown-toggle mt-2" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw pr-2"></i><?php
                     if(isset($_SESSION['admin_id'])){
-                        echo $_SESSION['username'];
+                        echo ucwords($_SESSION['username']);
                     }
                 ?>
             </a>

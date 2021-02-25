@@ -8,9 +8,9 @@
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw pr-2"></i>
                 <?php
                     if(isset($_SESSION['employee_id'])){
-                        echo ucwords($_SESSION['agency_name']) ." (". ucwords($_SESSION['role']) .")";
+                        echo ucwords($_SESSION['employee_firstname']) ." (". ucwords($_SESSION['role']) .")";
                     }elseif($_SESSION['agency_id']){
-                        echo ucwords($_SESSION['agency_name']) ." (Owner)";
+                        echo ucwords($_SESSION['owner_firstname']) ." (Owner)";
                     }
                 ?>
             </a>

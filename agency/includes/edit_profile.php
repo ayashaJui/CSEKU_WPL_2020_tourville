@@ -60,6 +60,7 @@
                     header('Location: profile.php?page=edit_profile&edit='. $agency_id);
                     return;
                 }else{
+                    $hash_password = password_hash($agency_password, PASSWORD_BCRYPT, ['cost' => 12]);
                     $stmt = $pdo->prepare('UPDATE agencies SET agency_name = :agency_name, owner_firstname = :owner_firstname, owner_lastname = :owner_lastname, agency_email = :agency_email, agency_password = :agency_password, logo_image = :logo_image, cover_image = :cover_image, agency_contact = :agency_contact, agency_address = :agency_address, agency_status = :agency_status, date = :date WHERE agency_id = :agency_id');
 
                     $stmt->execute([':agency_id'       => $agency_id,
@@ -67,7 +68,7 @@
                                     ':owner_firstname' => $owner_firstname,
                                     ':owner_lastname'  => $owner_lastname,
                                     ':agency_email'    => $agency_email,
-                                    ':agency_password' => $agency_password,
+                                    ':agency_password' => $hash_password,
                                     ':logo_image'      => $logo_img,
                                     ':cover_image'     => $cover_img,
                                     ':agency_contact'  => $contact,

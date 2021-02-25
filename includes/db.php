@@ -1,4 +1,5 @@
 <?php
+
     $host = 'localhost';
     $port = 3307;
     $db = 'tourism_db';

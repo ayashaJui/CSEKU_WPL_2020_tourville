@@ -1,12 +1,11 @@
 <?php
+    include "../config/api_key.php";
     include '../includes/db.php';
     include '../layouts/header.php';
     require '../vendor/autoload.php';
 
     // Stripe API Key
-    $stripe = new \Stripe\StripeClient(
-    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
-    );
+    $stripe = new \Stripe\StripeClient(STRIPE_KEY);
 
     //Tourist Insert Query.... Tourist Registration
     if(isset($_POST['tourist_register'])){
@@ -77,6 +76,7 @@
             return;
         }
         else{
+            $hash_password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
             $stmt = $pdo->prepare('INSERT INTO tourists(tourist_stripe, tourist_username, tourist_firstname, tourist_lastname, tourist_email, tourist_password, profile_image, tourist_contact, tourist_address, tourist_status, date) VALUES(:tourist_stripe, :tourist_username, :tourist_firstname, :tourist_lastname, :tourist_email, :tourist_password, :profile_image, :tourist_contact, :tourist_address, :tourist_status, :date)');
 
             $stmt->execute([':tourist_stripe'      => $customer->id,
@@ -84,24 +84,24 @@
                             ':tourist_firstname'   => $firstname,
                             ':tourist_lastname'    => $lastname,
                             ':tourist_email'       => $email,
-                            ':tourist_password'    => $password,
+                            ':tourist_password'    => $hash_password,
                             ':profile_image'       => $profile_img,
                             ':tourist_contact'     => $tourist_contact,
                             ':tourist_address'     => $address,
                             ':tourist_status'      => 'approved',
                             ':date'                => $date]);
 
-            header('Location: ../index.php');
+            header('Location: ../includes/login.php');
             return;
         }
     }
 
 ?>
 
-<br><br><br><br>
+<br><br><br>
 <div class="container mb-5">
     <h2 class="text-secondary text-center p-2 pb-4">Tourist Register</h2><br>
-    <form action="" method="post" enctype="multipart/form-data" class="col-md-8 mx-auto">
+    <form action="" method="post" enctype="multipart/form-data" class="col-md-8 mx-auto mb-5">
     
     <?php
         include '../includes/flash_msg.php';

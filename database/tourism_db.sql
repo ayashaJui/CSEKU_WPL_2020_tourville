@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 13, 2021 at 07:55 PM
+-- Generation Time: Feb 22, 2021 at 05:03 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -45,8 +45,9 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `username`, `admin_firstname`, `admin_lastname`, `admin_email`, `admin_password`, `admin_contact`, `admin_status`, `date`) VALUES
-(2, 'admin', 'System', 'Admin', 'admin@gmail.com', '1234', '', 'approved', '2020-10-25'),
-(3, 'admin001', 'Ryan', 'Smith', 'ryan@gmail.com', '1234', '', 'unapproved', '2020-10-25');
+(2, 'admin', 'System', 'Admin', 'admin@gmail.com', '$2y$12$YKWXPghlo3lhBMvjmlPIh./3DUggNr7euUErMMY2L67yvNLTelQPq', '', 'approved', '2020-10-25'),
+(3, 'admin001', 'Ryan', 'Smith', 'ryan@gmail.com', '$2y$12$sd2tv2Rb/jcEdeKMbq.QuenjzKmtVlbgmEMZYXAQB0848i7qU2uMe', '', 'unapproved', '2020-10-25'),
+(4, 'brad004', 'Brad', 'Coelho', 'brad@gmail.com', '$2y$12$OZyLotlfc7TLf6VHRxHKaepNIMlSP6xFC8rLkxJ1povxUgpSIoMo2', '', 'approved', '2021-02-22');
 
 -- --------------------------------------------------------
 
@@ -74,13 +75,14 @@ CREATE TABLE `agencies` (
 --
 
 INSERT INTO `agencies` (`agency_id`, `agency_name`, `owner_firstname`, `owner_lastname`, `agency_email`, `agency_password`, `logo_image`, `cover_image`, `agency_contact`, `agency_address`, `agency_status`, `date`) VALUES
-(2, 'Holidays', 'George', 'Smith', 'george@gmail.com', '1234', 'agency_logo.jpg', 'agency.jpg', '01478635912', '22, wall street, Dhaka', 'approved', '2020-10-27'),
-(3, 'Discover', 'Will', 'Martin', 'will@gmail.com', '1234', 'pexels-magda-ehlers-1337380.jpg', 'pexels-francisco-valerio-trujillo-1824392.jpg', '01778635912', '22, bk street, Khulna', 'approved', '2020-10-27'),
-(5, 'TravelZoo', 'Brida', 'Manson', 'brida@gmail.com', '1234', 'laura-chouette-Zg6UTBHQiI4-unsplash.jpg', 'luca-bravo-SRjZtxsK3Os-unsplash.jpg', '01478635912', '20, new street, sylhet', 'approved', '2020-12-31'),
-(6, 'Horizon', 'Megan', 'Taylor', 'megan@gmail.com', '1234', 'alexey-mak-sMZLg77Z2Dk-unsplash.jpg', 'alexander-popov-i0KaMiYdpDM-unsplash.jpg', '01278635912', '22, mk street, Rajshahi', 'approved', '2021-01-12'),
-(7, 'Lost Panorama', 'Tag', 'Jones', 'tag@gmail.com', '1234', 'francesco-ungaro-9UWXNSbEuYw-unsplash.jpg', 'hugo-delauney-feHioLsUj8o-unsplash.jpg', '01278635919', '22, mk street, Barisal', 'approved', '2021-01-12'),
-(8, 'Tropical Travel', 'Michael', 'Willson', 'michael@gmail.com', '1234', 'moritz-mentges-5MlBMYDsGBY-unsplash.jpg', 'riz-mooney-Ep3NPU9Uhkw-unsplash.jpg', '01278635919', '22, bk street, Chittagong', 'approved', '2021-01-12'),
-(12, 'BookIt', 'Liam', 'Reece', 'liam@gmail.com', '1234', '1agency_logo.jpg', '1agency_cover.jpg', '01254789632', '22,bl road, Dhaka', 'approved', '2021-01-12');
+(2, 'Holidays', 'George', 'Smith', 'george@gmail.com', '$2y$12$xHb7FvRS3jRly6DX9Z/fxesZ.Ox.I7kVkJLrws0HBgMxrJcXTqWEu', 'agency_logo.jpg', 'agency.jpg', '01478635912', '22, wall street, Dhaka', 'approved', '2020-10-27'),
+(3, 'Discover', 'Will', 'Martin', 'will@gmail.com', '$2y$12$7h2.szSNl9HEVScOYBGNmu6u3WfiHahskOKxo97SpBi5sGL0ouLvG', 'pexels-magda-ehlers-1337380.jpg', 'pexels-francisco-valerio-trujillo-1824392.jpg', '01778635912', '22, bk street, Khulna', 'approved', '2020-10-27'),
+(5, 'TravelZoo', 'Brida', 'Manson', 'brida@gmail.com', '$2y$12$Aq7puCCxM5WDvFmiH/nNDeUUUELpSwyelUedy.3/4WD21IXz6LEcy', 'laura-chouette-Zg6UTBHQiI4-unsplash.jpg', 'luca-bravo-SRjZtxsK3Os-unsplash.jpg', '01478635912', '20, new street, sylhet', 'approved', '2020-12-31'),
+(6, 'Horizon', 'Megan', 'Taylor', 'megan@gmail.com', '$2y$12$opFrZrLRmhDKeZVarR6lxOqNBCp7fI2K1bqlmpjx8nx8N1NRacaK.', 'alexey-mak-sMZLg77Z2Dk-unsplash.jpg', 'alexander-popov-i0KaMiYdpDM-unsplash.jpg', '01278635912', '22, mk street, Rajshahi', 'approved', '2021-01-12'),
+(7, 'Lost Panorama', 'Tag', 'Jones', 'tag@gmail.com', '$2y$12$Yn6g6oanzUvPgjw8cuXMXej/BWyqdmnC6ub0A//YeDe1YT8SSjwlC', 'francesco-ungaro-9UWXNSbEuYw-unsplash.jpg', 'hugo-delauney-feHioLsUj8o-unsplash.jpg', '01278635919', '22, mk street, Barisal', 'approved', '2021-01-12'),
+(8, 'Tropical Travel', 'Michael', 'Willson', 'michael@gmail.com', '$2y$12$ziF9ELWkDtGEM.rwgv8HQe97QlpLI18hQ6.lOngi1hbCd5Soiamri', 'moritz-mentges-5MlBMYDsGBY-unsplash.jpg', 'riz-mooney-Ep3NPU9Uhkw-unsplash.jpg', '01278635919', '22, bk street, Chittagong', 'approved', '2021-01-12'),
+(12, 'BookIt', 'Liam', 'Reece', 'liam@gmail.com', '$2y$12$UD6ISyYopu51fC6El45xv.6hqP6JsWmyZdN37TDalxeVwhtqLzT7S', '1agency_logo.jpg', '1agency_cover.jpg', '01254789632', '22,bl road, Dhaka', 'approved', '2021-01-12'),
+(13, 'new', 'sss', 'kkk', 'some@gmail.com', '$2y$12$UIJyUDObjV8PhLsgC1eGrO9nhgIWeNg0SCdYqwAQWL2Svsbth7WYS', '', '', '01778635912', '22, mk street, Barisal', 'unapproved', '2021-02-22');
 
 -- --------------------------------------------------------
 
@@ -106,14 +108,15 @@ CREATE TABLE `agency_employees` (
 --
 
 INSERT INTO `agency_employees` (`employee_id`, `agency_id`, `employee_firstname`, `employee_lastname`, `employee_email`, `employee_password`, `employee_contact`, `employee_address`, `role`, `date`) VALUES
-(2, 3, 'Nicholas', 'Martin', 'nicholas@gmail.com', '1234', '01879359632', '22, ak street, ohio', 'manager', '2020-11-01'),
-(3, 3, 'Alice', 'Jane', 'alice@gmail.com', '1234', '01879359632', '22, no street, ohio', 'staff', '2020-11-07'),
-(4, 2, 'Christina', 'Jones', 'christina@gmail.com', '1234', '01789365477', '21, ak street, sylhet', 'manager', '2020-11-02'),
-(5, 3, 'Kathleen', 'Homes', 'kathy@gmail.com', '1234', '01789365477', '21, pk street, sylhet', 'staff', '2020-11-07'),
-(6, 5, 'Samia', 'Shorna', 'samia@gmail.com', '1234', '01879359632', '22, ak street, ohio', 'staff', '2020-12-28'),
-(8, 5, 'Alice', 'Shorna', 'alice1@gmail.com', '1234', '01879359632', '21, pk street, sylhet', 'manager', '2020-12-27'),
-(9, 5, 'jui', 'ayaha', 'jui@gmail.com', '1234', '01879359632', '22, no street, ohio', 'staff', '2020-12-27'),
-(10, 12, 'Jacob', 'Evans', 'jacob@gmail.com', '1234', '01258974630', '22,bk road, khulna', 'manager', '2020-12-27');
+(2, 3, 'Nicholas', 'Martin', 'nicholas@gmail.com', '$2y$12$E6vy6NcMbgrb6KBVxk881Oovt/TpEwKLuNa6ZvM9QIHjjF3P3k3ma', '01879359632', '22, ak street, ohio', 'manager', '2020-11-01'),
+(3, 3, 'Alice', 'Jane', 'alice@gmail.com', '$2y$12$Qe7wIzhdH0YsAgDAzC85/O85FKW/uA3TZdGFl9DSqqpqfVuF/G1H.', '01879359632', '22, no street, ohio', 'staff', '2020-11-07'),
+(4, 2, 'Christina', 'Jones', 'christina@gmail.com', '$2y$12$2NfFKVii4OzBaE8MGuz5qOhpEDu90L0Kgeh7mxfvfaz.6iF6d8IKe', '01789365477', '21, ak street, sylhet', 'manager', '2020-11-02'),
+(5, 3, 'Kathleen', 'Homes', 'kathy@gmail.com', '$2y$12$ztOf8xukuxJhCo1hpxIBfOKv6AMKhmqBUVdpOtETzw8dgWrpioqO2', '01789365477', '21, pk street, sylhet', 'staff', '2020-11-07'),
+(6, 5, 'Samia', 'Shorna', 'samia@gmail.com', '$2y$12$wa.AJAFFQ4DUS.WzThAxI.VrQ7hGClsvvSaHW5GBOr1YTAKwDiMlm', '01879359632', '22, ak street, ohio', 'staff', '2020-12-28'),
+(8, 5, 'Alice', 'Shorna', 'alice@gmail.com', '$2y$12$fpI4Qz5SW1Bqa9pACSCOa.x7lxaldfDLVTNPBFDSdc6OnGsiOQX9S', '01879359632', '21, pk street, sylhet', 'manager', '2020-12-27'),
+(9, 5, 'jui', 'ayasha', 'jui@gmail.com', '$2y$12$fZ5dkQsOhvm4ACUOOup/lOkA8L5dWuD1VWeJuivGHeezztNPESt/e', '01879359632', '22, no street, ohio', 'staff', '2020-12-27'),
+(10, 12, 'Jacob', 'Evans', 'jacob@gmail.com', '$2y$12$YNMtoi5/b9SDrBpJyY8eXeX/PM35/j6qM18TmAu25VomciqLnzMM2', '01358974630', '22,bk road, khulna', 'manager', '2020-12-27'),
+(11, 12, 'Tessa', 'May', 'tes@gmail.com', '$2y$12$3lnwMfi9rLOsxYHgWwD7veuOM1nWtDcm0UgNQW4mKg2rjD7RiF9WG', '01358974630', '21, ak street, sylhet', 'staff', '2021-02-01');
 
 -- --------------------------------------------------------
 
@@ -389,15 +392,15 @@ CREATE TABLE `tourists` (
 --
 
 INSERT INTO `tourists` (`tourist_id`, `tourist_stripe`, `tourist_username`, `tourist_firstname`, `tourist_lastname`, `tourist_email`, `tourist_password`, `profile_image`, `tourist_contact`, `tourist_address`, `tourist_status`, `date`) VALUES
-(3, 'cus_IfKZWihUWnctLc', 'john11', 'John', 'Green', 'john@gmail.com', '1234', 'download (1).jpg', '', '', 'approved', '2020-12-30'),
-(4, 'cus_IfKsR5lD0VJ5Zk', 'james13', 'James', 'Rollins', 'james@gmail.com', '1234', '', '', '', 'approved', '2020-12-30'),
-(5, 'cus_IfeSNCc0xKSOqa', 'Lizzy110', 'Lizzy', 'Bennet', 'liz@gmail.com', '1234', 'christopher-campbell-rDEOVtE7vOs-unsplash.jpg', '', '', 'approved', '2020-12-31'),
-(8, 'cus_IkDTn94kqMAT0w', 'darcy001', 'Fitzwilliam', 'Darcy', 'darcy@gmail.com', '1234', 'jonny-neuenhagen-49e5-juD4co-unsplash.jpg', '', '', 'approved', '2021-01-12'),
-(9, 'cus_IkDVouLPuOSrg9', 'maria420', 'Maria', 'Smith', 'maria@gmail.com', '1234', 'manny-moreno-gVPmUcMgoII-unsplash.jpg', '', '', 'approved', '2021-01-12'),
-(10, 'cus_IkDXhVrPXPnFv4', 'jasmin223', 'Jasmin', 'Chew', 'jasmin@gmail.com', '1234', 'jasmin-chew-yMdI_y-zfzs-unsplash.jpg', '', '', 'approved', '2021-01-12'),
-(11, 'cus_IkDZQK21VDbAc1', 'oliver556', 'Oliver', 'Bingley', 'oliver@gmail.com', '1234', 'aeecc22a67dac7987a80ac0724658493.jpg', '', '', 'approved', '2021-01-12'),
-(12, 'cus_IkDd4H4bHyMv5K', 'heisenberg', 'Walter', 'White', 'walter@gmail.com', '1234', 'Walter_White_pilot.png', '', '', 'approved', '2021-01-12'),
-(14, 'cus_IkNtRL2LSUWj8v', 'jack003', 'Jack', 'Charles', 'jack@gmail.com', '1234', '1tourist.jpg', '', '', 'approved', '2021-01-12');
+(3, 'cus_IfKZWihUWnctLc', 'john11', 'John', 'Green', 'john@gmail.com', '$2y$12$NMY5bfT4NrnMPfQKncdtQOL5E4n89kfj10afg5JLotXXLRAuOYBY2', 'download (1).jpg', '', '', 'approved', '2020-12-30'),
+(4, 'cus_IfKsR5lD0VJ5Zk', 'james13', 'James', 'Rollins', 'james@gmail.com', '$2y$12$Ty275THcKi.louXDelK5ROabmqJLNEO4.PleoJBbgvw8hvJhN3ybu', '', '', '', 'approved', '2020-12-30'),
+(5, 'cus_IfeSNCc0xKSOqa', 'Lizzy110', 'Lizzy', 'Bennet', 'liz@gmail.com', '$2y$12$kvvZXgRBDNPluv6yu.YktufV01Bfd/BD2X7dE2Kl5f6B.bfCYp79y', 'christopher-campbell-rDEOVtE7vOs-unsplash.jpg', '', '', 'approved', '2020-12-31'),
+(8, 'cus_IkDTn94kqMAT0w', 'darcy001', 'Fitzwilliam', 'Darcy', 'darcy@gmail.com', '$2y$12$pHdgcRSmxJ0ks1pn2AVdneVoSoDx5e5yHEo2X75JZse1W.aSEwfpS', 'jonny-neuenhagen-49e5-juD4co-unsplash.jpg', '', '', 'approved', '2021-01-12'),
+(9, 'cus_IkDVouLPuOSrg9', 'maria420', 'Maria', 'Smith', 'maria@gmail.com', '$2y$12$sxCd9cnpcZ.llyhVHYPMIuSjRJd3XhZmQPaEfqdNeJgEoSXSJZOpW', 'manny-moreno-gVPmUcMgoII-unsplash.jpg', '', '', 'approved', '2021-01-12'),
+(10, 'cus_IkDXhVrPXPnFv4', 'jasmin223', 'Jasmin', 'Chew', 'jasmin@gmail.com', '$2y$12$up.rkb13MqBRQUyeoMdDUuKzMjHQHthIKt9tA9P5JuKO/QaoutUoG', 'jasmin-chew-yMdI_y-zfzs-unsplash.jpg', '', '', 'approved', '2021-01-12'),
+(11, 'cus_IkDZQK21VDbAc1', 'oliver556', 'Oliver', 'Bingley', 'oliver@gmail.com', '$2y$12$58StAtIkNWZGduhhEOyWuumnSgKA6x2SeJYmWot0T1szHAcDmdJSm', 'aeecc22a67dac7987a80ac0724658493.jpg', '', '', 'approved', '2021-01-12'),
+(12, 'cus_IkDd4H4bHyMv5K', 'heisenberg', 'Walter', 'White', 'walter@gmail.com', '$2y$12$nPNbKXMRdRLw5HFRnMHMmOf/UpIhnBiRjj6fqowmdByWwqN7ixphO', 'Walter_White_pilot.png', '', '', 'approved', '2021-01-12'),
+(14, 'cus_IkNtRL2LSUWj8v', 'jack003', 'Jack', 'Charles', 'jack@gmail.com', '$2y$12$ATcijkSNj6WYoiSh3h6Roe2vkVqH59JECRRUyt.HnN6ZzDGZwIF8.', '1tourist.jpg', '', '', 'approved', '2021-01-12');
 
 --
 -- Indexes for dumped tables
@@ -487,19 +490,19 @@ ALTER TABLE `tourists`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `agencies`
 --
 ALTER TABLE `agencies`
-  MODIFY `agency_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `agency_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `agency_employees`
 --
 ALTER TABLE `agency_employees`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `bookings`
@@ -541,7 +544,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `tourists`
 --
 ALTER TABLE `tourists`
-  MODIFY `tourist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `tourist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables

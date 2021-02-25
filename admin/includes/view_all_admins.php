@@ -95,12 +95,23 @@
                             echo "<td><a href='admins.php?approve=". $admin['admin_id'] ."' class='btn btn-success mt-1'>Approve</a></td>";
                             echo "<td><a href='admins.php?unapprove=". $admin['admin_id'] ."' class='btn btn-secondary mt-1'>Unapprove</a></td>";
                             echo "<td><a href='admins.php?page=edit_admin&edit=". $admin['admin_id'] ."' class='btn btn-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
-                            echo "<a href='admins.php?delete=". $admin['admin_id'] ."' class='btn btn-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+
+                            if($_SESSION['admin_id'] === $admin['admin_id']){
+                                echo "<button title='You can not delete yourself!!' class='btn btn-danger mt-1'><i class='fas fa-trash-alt'></i></button></td>";
+                            }else{
+                                echo "<a href='admins.php?delete=". $admin['admin_id'] ."' class='btn btn-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+                            }
+                            
                         }else{
                             echo "<td><a href='admins.php?approve=". $admin['admin_id'] ."' class='btn btn-outline-success mt-1'>Approve</a></td>";
                             echo "<td><a href='admins.php?unapprove=". $admin['admin_id'] ."' class='btn btn-outline-secondary mt-1'>Unapprove</a></td>";
                             echo "<td><a href='admins.php?page=edit_admin&edit=". $admin['admin_id'] ."' class='btn btn-outline-warning mr-1 mt-1'><i class='fas fa-edit'></i></a>";
-                            echo "<a href='admins.php?delete=". $admin['admin_id'] ."' class='btn btn-outline-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+
+                            if($_SESSION['admin_id'] === $admin['admin_id']){
+                                echo "<button title='You can not delete yourself!!' class='btn btn-outline-danger mt-1'><i class='fas fa-trash-alt'></i></button></td>";
+                            }else{
+                                echo "<a href='admins.php?delete=". $admin['admin_id'] ."' class='btn btn-outline-danger mt-1'><i class='fas fa-trash-alt'></i></a></td>";
+                            }         
                         }
                         echo "</tr>";
                 }

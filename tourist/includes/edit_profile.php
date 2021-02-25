@@ -1,11 +1,9 @@
 <?php
-
-     require 'vendor/autoload.php';
+    include "config/api_key.php";
+    require 'vendor/autoload.php';
 
     // Stripe API Key
-    $stripe = new \Stripe\StripeClient(
-    'sk_test_51I2VszFRq96Mv30adt48SkZsYWrICf1xCl47sv40GxlV9GFZWcu3O0e9fsUaIZy6fBhKgRGLuQcUxDGEh8xd0iEC000wfHTLWc'
-    );
+    $stripe = new \Stripe\StripeClient(STRIPE_KEY);
     
     if(isset($_SESSION['tourist_id'])){
         if(isset($_GET['edit'])){
@@ -66,6 +64,8 @@
                     header('Location: profile.php?page=edit_profile&edit='. $tourist_id);
                     return;
                 }else{
+                    $hash_password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+
                     $stmt = $pdo->prepare('UPDATE tourists SET tourist_stripe = :tourist_stripe, tourist_username = :tourist_username, tourist_firstname = :tourist_firstname, tourist_lastname = :tourist_lastname, tourist_email = :tourist_email, tourist_password = :tourist_password, profile_image = :profile_image,  tourist_contact = :tourist_contact, tourist_address = :tourist_address, tourist_status = :tourist_status, date = :date WHERE tourist_id = :tourist_id');
 
                     $stmt->execute(['tourist_stripe'       => $tourist_stripe->id,
@@ -74,7 +74,7 @@
                                     ':tourist_firstname'   => $firstname,
                                     ':tourist_lastname'    => $lastname,
                                     ':tourist_email'       => $tourist_email,
-                                    ':tourist_password'    => $password,
+                                    ':tourist_password'    => $hash_password,
                                     ':profile_image'       => $profile_img,
                                     ':tourist_contact'     => $tourist_contact,
                                     ':tourist_address'     => $address,

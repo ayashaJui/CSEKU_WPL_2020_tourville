@@ -44,13 +44,14 @@
         }
         
         else{
+            $hash_password = password_hash($admin_password, PASSWORD_BCRYPT, ['cost' => 12]);
             $stmt = $pdo->prepare('INSERT INTO admins(username, admin_firstname, admin_lastname, admin_email, admin_password, admin_status, date) VALUES(:username, :admin_firstname, :admin_lastname, :admin_email, :admin_password, :admin_status, :date)');
 
             $stmt->execute([':username'        => $username,
                             ':admin_firstname' => $admin_firstname,
                             ':admin_lastname'  => $admin_lastname,
                             ':admin_email'     => $admin_email,
-                            ':admin_password'  => $admin_password,
+                            ':admin_password'  => $hash_password,
                             ':admin_status'    => 'approved',
                             ':date'            => $date]);
             $_SESSION['success'] = 'New Admin Added';

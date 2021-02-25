@@ -33,6 +33,7 @@
                 header("Location: employees.php?page=edit_employee&edit=". $employee_id);
                 return;
             }else{
+                $hash_password = password_hash($employee_password, PASSWORD_BCRYPT, ['cost' => 12]);
                 $stmt = $pdo->prepare('UPDATE agency_employees SET agency_id = :agency_id, employee_firstname = :employee_firstname, employee_lastname = :employee_lastname, employee_email = :employee_email, employee_password = :employee_password, employee_contact = :employee_contact, employee_address = :employee_address, role = :role, date = :date WHERE employee_id = :employee_id');
 
                 $stmt->execute([':employee_id'          => $employee_id,
@@ -40,7 +41,7 @@
                                 ':employee_firstname'   => $employee_firstname,
                                 ':employee_lastname'    => $employee_lastname,
                                 ':employee_email'       => $employee_email,
-                                ':employee_password'    => $employee_password,
+                                ':employee_password'    => $hash_password,
                                 ':employee_contact'     => $contact,
                                 ':employee_address'     => $employee_address,
                                 ':role'                 => $role,
