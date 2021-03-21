@@ -8,40 +8,8 @@
 <head>
     <style>
       html,
-      body,
-      .view {
+      body {
         height: 100%;
-      }
-
-      .carousel,
-      .carousel-item,
-      .carousel-item.active {
-        height: 86vh;
-      }
-
-      .carousel-inner {
-        height: 100%;
-      }
-
-      .carousel-item:nth-child(1) {
-        background-image: url("images/view/carousel1.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-      }
-
-      .carousel-item:nth-child(2) {
-        background-image: url("images/view/carousel2.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-      }
-
-      .carousel-item:nth-child(3) {
-        background-image: url("images/view/carousel3.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
       }
 
       .star-active {
@@ -69,101 +37,148 @@
         transition: box-shadow 0.2s ease-in-out;
       }
 
+      /* Video Background */
+      .video-background {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: auto;
+      }
+
+      video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .video-overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(255, 255, 255, 0.35);
+      }
+
+      .content-container {
+        min-width: 580px;
+        min-height: 304px;
+        color: black;
+        margin: 0 auto;
+        padding: 25px 50px;
+        border-radius: 5px;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.85);
+      }
+
+      .input-container {
+        position: relative;
+        top: 80px;
+      }
+
+      h1{
+        font-size: 35px;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .quote{
+        font-size: 20px;
+        color: #000;
+        font-weight: 700;
+      }
+
+      h3{
+        font-size: 30px;
+        text-align: center;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #000;
+        position: relative; 
+        z-index: 2;
+        margin: 50px auto;
+      }
+
+      @media screen and (max-width: 600px) {
+      .video-background {
+        height: 100vh;
+        width: 100vw;
+      }
+      
+      video {
+        object-fit: cover;
+        object-position: 70%;
+        margin-top: -1px;
+      }
+
+      .content-container {
+        min-width: unset;
+        width: 95vw;
+        min-height: 245px;
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .input-container {
+        top: unset;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .quote{
+        font-size: 15px;
+      }
+
+      h3{
+        font-size: 25px;
+      }
+
+    }
+
+    input{
+     
+    }
+
     </style>
       
 </head>
 
 <br><br><br>
-<!--Carousel Wrapper-->
-  <div id="carousel-example-1" class="carousel slide carousel-fade mb-5" data-ride="carousel">
 
-    <!--Indicators-->
-    <ol class="carousel-indicators">
-      <li data-target="#carousel-example-1" data-slide-to="0" class="active"></li>
-      <li data-target="#carousel-example-1" data-slide-to="1"></li>
-      <li data-target="#carousel-example-1" data-slide-to="2"></li>
-    </ol>
-    <!--/.Indicators-->
+<!-- Video Background  -->
 
-    <!--Slides-->
-    <div class="carousel-inner"  role="listbox">
-      <!--First slide-->
-      <div class="carousel-item active">
-        <!--Mask-->
-        <div class="view">
-          <div class="full-bg-img flex-center mask rgba-indigo-light white-text">
-            <ul class="animated fadeInUp col-md-12 list-unstyled list-inline"> 
-              <li class="p-1">
-                <blockquote class="blockquote font-weight-bold text-uppercase py-4 ml-5">
-                    <p>The world is a book <br> and those who do not travel read only one page..</p>
-                    <footer class="blockquote-footer">Saint Augustine</footer>
-                </blockquote>
-              </li>
-              <li>
-                <form action="search.php" method="post" class="input-group">
-                  <input type="text" name="search" id="" placeholder="Search" class="form-control col-md-4 ml-5">
-                  <button class="btn btn-outline-success ml-1 p-2" type="submit" name="submit"><i class="fas fa-search"></i></button>
-                </form>
-              </li>
-            </ul>
-          </div>
+<div class="container my-5">
+  <video class="video-background" loop muted autoplay>
+    <source src="videos/Dubrovnik.mp4">
+  </video>
+  <div class="video-overlay"></div>
+
+  <div class="content-container my-5">
+    <!-- Input Container  -->
+    <div class="input-container" id="input-container">
+        <h1 class="mb-5" data-aos="fade-up">Welcome to tourville </h1>
+        <div class="quote" data-aos="fade-right" data-aos-delay="600">
+          <p>The world is a book and those who do not travel read only one page..</p>
+          <footer class="blockquote-footer text-dark text-center">Saint Augustine</footer>
         </div>
-        <!--/.Mask-->
-      </div>
-      <!--/.First slide-->
-
-      <!--Second slide -->
-      <div class="carousel-item">
-        <!--Mask-->
-        <div class="view">
-          <div class="full-bg-img flex-center mask rgba-purple-light white-text">
-            <ul class="animated fadeInUp col-md-12 list-unstyled">
-              <li>
-                <blockquote class="blockquote font-weight-bold text-uppercase py-4 ml-5">
-                    <p>Travel opens your heart, broadens your mind <br> and fills your life with stories to tell..</p>
-                </blockquote>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!--/.Mask-->
-      </div>
-      <!--/.Second slide -->
-
-      <!--Third slide-->
-      <div class="carousel-item">
-        <!--Mask-->
-        <div class="view">
-          <div class="full-bg-img flex-center mask rgba-blue-light white-text">
-            <ul class="animated fadeInUp col-md-12 list-unstyled">
-              <li>
-                <blockquote class="blockquote font-weight-bold text-uppercase py-4 ml-5">
-                    <p>Traveling leaves you speechless, <br> then it turns you into a storyteller..</p>
-                    <footer class="blockquote-footer">Ibn battuta</footer>
-                </blockquote>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!--/.Mask-->
-      </div>
-      <!--/.Third slide-->
+        <form action="search.php" method="post" class="input-group mt-5" data-aos="fade-right" data-aos-delay="800">
+          <input type="text" name="search" id="" placeholder="Search" class="form-control col-sm-6 ml-auto" style="border-top-right-radius: 3px;  border-bottom-right-radius: 3px;">
+          <button class="btn btn-success ml-1 p-2 mr-auto" type="submit" name="submit"><i class="fas fa-search"></i></button>
+        </form>
     </div>
-    <!--/.Slides-->
-
-    <!--Controls-->
-    <a class="carousel-control-prev" href="#carousel-example-1" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carousel-example-1" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    <!--/.Controls-->
   </div>
-  <!--/.Carousel Wrapper-->
-
+</div>
 
 <!-- Top Agencies according to Ratings -->
 <?php
@@ -175,8 +190,9 @@
     }
 ?>
 
-<div class="container">
-    <h3 class="text-center my-5 pt-5">Top Agencies</h3>
+<br><br><br><br><br><br>
+<div class="container mt-5">
+    <h3 class="text-center pt-5">Top Agencies</h3>
     <div class="row">
 
     <?php
@@ -188,7 +204,7 @@
 
     ?>
 
-      <div class="col-sm-4">
+      <div class="col-sm-4" data-aos="fade-up">
         <div class="card mb-5 mt-2 effect">
           <div>
             <a href="agency.php?agency_id=<?php echo $top_agency['agency_id']; ?>">
@@ -233,7 +249,7 @@
     </div>
 </div>
 
-<footer class='text-center mt-5 p-1' style="background: #E9EAEC;">
+<footer class='text-center mt-5 p-1' style="background: #E9EAEC; position: relative; z-index: 2;">
   <h6>tourism@tourville &copy;2020</h6>
 </footer>
 

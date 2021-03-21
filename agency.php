@@ -70,7 +70,7 @@
 
     <div class="container ml-5">
         <form action="search_agency_package.php?agency_id=<?php echo $agency_id; ?>" method="post" class="input-group ml-3 mt-5 float-center">
-            <input type="text" name="search" id="" placeholder="Search package" class="form-control col-md-4">
+            <input type="text" name="search" id="" placeholder="Search package" class="form-control col-md-4" style="border-top-right-radius: 3px;  border-bottom-right-radius: 3px;"> 
             <button class="btn btn-outline-success ml-1 p-2" type="submit" name="submit"><i class="fas fa-search"></i></button>
         </form>
     </div>

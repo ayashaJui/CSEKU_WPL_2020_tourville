@@ -49,7 +49,7 @@
     <h2 class="display-4 font-weight-bold">Agency List</h2>
     <p class="lead">
       <form action="search.php" method="post" class="input-group">
-            <input type="text" name="search" id="" placeholder="Search" class="form-control col-md-4">
+            <input type="text" name="search" id="" placeholder="Search" class="form-control col-md-4" style="border-top-right-radius: 3px;  border-bottom-right-radius: 3px;">
             <button class="btn btn-outline-success ml-2 p-2" type="submit" name="submit"><i class="fas fa-search"></i></button>
         </form>
     </p>
