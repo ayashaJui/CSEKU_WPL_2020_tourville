@@ -7,6 +7,8 @@
 ?>
 <head>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Ephesis&display=swap');
+
       html,
       body {
         height: 100%;
@@ -59,7 +61,7 @@
         top: 0;
         height: 100vh;
         width: 100vw;
-        background-color: rgba(255, 255, 255, 0.35);
+        background-color: rgba(0, 0, 0, 0.6);
       }
 
       .content-container {
@@ -82,12 +84,13 @@
       }
 
       h1{
-        font-size: 35px;
+        font-size: 70px;
+        font-family: 'Ephesis', cursive;
         text-align: center;
         margin-top: 20px;
         margin-bottom: 20px;
         letter-spacing: 3px;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         font-weight: 600;
       }
 
@@ -133,7 +136,7 @@
       }
 
       h1 {
-        font-size: 20px;
+        font-size: 40px;
       }
 
       .quote{
@@ -146,9 +149,6 @@
 
     }
 
-    input{
-     
-    }
 
     </style>
       
@@ -167,10 +167,10 @@
   <div class="content-container my-5">
     <!-- Input Container  -->
     <div class="input-container" id="input-container">
-        <h1 class="mb-5" data-aos="fade-up">Welcome to tourville </h1>
+        <h1 class="mb-5 text-white" data-aos="fade-up">Welcome To Tourville </h1>
         <div class="quote" data-aos="fade-right" data-aos-delay="600">
-          <p>The world is a book and those who do not travel read only one page..</p>
-          <footer class="blockquote-footer text-dark text-center">Saint Augustine</footer>
+          <p class='text-muted'>The world is a book and those who do not travel read only one page..</p>
+          <footer class="blockquote-footer  text-center">Saint Augustine</footer>
         </div>
         <form action="search.php" method="post" class="input-group mt-5" data-aos="fade-right" data-aos-delay="800">
           <input type="text" name="search" id="" placeholder="Search" class="form-control col-sm-6 ml-auto" style="border-top-right-radius: 3px;  border-bottom-right-radius: 3px;">
@@ -192,12 +192,12 @@
 
 <br><br><br><br><br><br>
 <div class="container mt-5">
-    <h3 class="text-center pt-5">Top Agencies</h3>
+    <h3 class="text-center text-white pt-5">Top Agencies</h3>
     <div class="row">
 
     <?php
       if(empty($top_agencies)){
-        echo '<h1 class="text-center pt-4 mx-auto">No Agency Found</h1>';
+        echo '<h2 class="text-center pt-4 mx-auto">No Agency Found</h2>';
       }else{
         foreach($top_agencies as $top_agency){
           $agency = readAgency($top_agency['agency_id']);
@@ -205,7 +205,7 @@
     ?>
 
       <div class="col-sm-4" data-aos="fade-up">
-        <div class="card mb-5 mt-2 effect">
+        <div class="card mb-5 mt-2 effect" data-tilt>
           <div>
             <a href="agency.php?agency_id=<?php echo $top_agency['agency_id']; ?>">
             <img src="images/<?php echo $agency['logo_image']; ?>" class="card-img-top" height="240" alt="<?php echo $agency['agency_name']; ?>"></a>
@@ -249,10 +249,10 @@
     </div>
 </div>
 
-<footer class='text-center mt-5 p-1' style="background: #E9EAEC; position: relative; z-index: 2;">
-  <h6>tourism@tourville &copy;2020</h6>
+<footer class='text-center mt-5 p-1' style="background: #343A40; position: relative; z-index: 2;">
+  <p class="text-white text-center pt-2">tourism@tourville &copy;2020</p>
 </footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js" integrity="sha512-u1L7Dp3BKUP3gijgSRoMTNxmDl/5o+XOHupwwa7jsI1rMzHrllSLKsGOfqjYl8vrEG+8ghnRPNA/SCltmJCZpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
     include 'layouts/footer.php';
 ?>
