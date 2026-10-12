@@ -1,5 +1,5 @@
 <?php
-    include "config/api_key.php";
+    include __DIR__ . "/../../config/api_key.php";
     require 'vendor/autoload.php';
 
     // Stripe API Key

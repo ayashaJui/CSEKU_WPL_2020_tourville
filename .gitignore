@@ -1,2 +1,4 @@
 /vendor
-/config
+/config/*
+!/config/api_key.example.php
+!/config/db.example.php
