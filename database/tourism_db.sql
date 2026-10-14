@@ -45,7 +45,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `username`, `admin_firstname`, `admin_lastname`, `admin_email`, `admin_password`, `admin_contact`, `admin_status`, `date`) VALUES
-(2, 'admin', 'System', 'Admin', 'admin@gmail.com', '$2y$12$YKWXPghlo3lhBMvjmlPIh./3DUggNr7euUErMMY2L67yvNLTelQPq', '', 'approved', '2020-10-25'),
+(2, 'admin', 'System', 'Admin', 'admin@gmail.com', '$2y$12$MOGKKGv1FwapeHP0Xf4psuqfsyhY.hFoXruN631jm10x1B.0YH/FW', '', 'approved', '2020-10-25'),
 (3, 'admin001', 'Ryan', 'Smith', 'ryan@gmail.com', '$2y$12$sd2tv2Rb/jcEdeKMbq.QuenjzKmtVlbgmEMZYXAQB0848i7qU2uMe', '', 'unapproved', '2020-10-25'),
 (4, 'brad004', 'Brad', 'Coelho', 'brad@gmail.com', '$2y$12$OZyLotlfc7TLf6VHRxHKaepNIMlSP6xFC8rLkxJ1povxUgpSIoMo2', '', 'approved', '2021-02-22');
 
@@ -75,7 +75,7 @@ CREATE TABLE `agencies` (
 --
 
 INSERT INTO `agencies` (`agency_id`, `agency_name`, `owner_firstname`, `owner_lastname`, `agency_email`, `agency_password`, `logo_image`, `cover_image`, `agency_contact`, `agency_address`, `agency_status`, `date`) VALUES
-(2, 'Holidays', 'George', 'Smith', 'george@gmail.com', '$2y$12$xHb7FvRS3jRly6DX9Z/fxesZ.Ox.I7kVkJLrws0HBgMxrJcXTqWEu', 'agency_logo.jpg', 'agency.jpg', '01478635912', '22, wall street, Dhaka', 'approved', '2020-10-27'),
+(2, 'Holidays', 'George', 'Smith', 'george@gmail.com', '$2y$12$7p.TDxfSnfb0urIKsTJEiOGVP3Is9PYSof3BuUebYHv7/Ytmxukm2', 'agency_logo.jpg', 'agency.jpg', '01478635912', '22, wall street, Dhaka', 'approved', '2020-10-27'),
 (3, 'Discover', 'Will', 'Martin', 'will@gmail.com', '$2y$12$7h2.szSNl9HEVScOYBGNmu6u3WfiHahskOKxo97SpBi5sGL0ouLvG', 'pexels-magda-ehlers-1337380.jpg', 'pexels-francisco-valerio-trujillo-1824392.jpg', '01778635912', '22, bk street, Khulna', 'approved', '2020-10-27'),
 (5, 'TravelZoo', 'Brida', 'Manson', 'brida@gmail.com', '$2y$12$Aq7puCCxM5WDvFmiH/nNDeUUUELpSwyelUedy.3/4WD21IXz6LEcy', 'laura-chouette-Zg6UTBHQiI4-unsplash.jpg', 'luca-bravo-SRjZtxsK3Os-unsplash.jpg', '01478635912', '20, new street, sylhet', 'approved', '2020-12-31'),
 (6, 'Horizon', 'Megan', 'Taylor', 'megan@gmail.com', '$2y$12$opFrZrLRmhDKeZVarR6lxOqNBCp7fI2K1bqlmpjx8nx8N1NRacaK.', 'alexey-mak-sMZLg77Z2Dk-unsplash.jpg', 'alexander-popov-i0KaMiYdpDM-unsplash.jpg', '01278635912', '22, mk street, Rajshahi', 'approved', '2021-01-12'),
@@ -392,7 +392,7 @@ CREATE TABLE `tourists` (
 --
 
 INSERT INTO `tourists` (`tourist_id`, `tourist_stripe`, `tourist_username`, `tourist_firstname`, `tourist_lastname`, `tourist_email`, `tourist_password`, `profile_image`, `tourist_contact`, `tourist_address`, `tourist_status`, `date`) VALUES
-(3, 'cus_IfKZWihUWnctLc', 'john11', 'John', 'Green', 'john@gmail.com', '$2y$12$NMY5bfT4NrnMPfQKncdtQOL5E4n89kfj10afg5JLotXXLRAuOYBY2', 'download (1).jpg', '', '', 'approved', '2020-12-30'),
+(3, 'cus_IfKZWihUWnctLc', 'john11', 'John', 'Green', 'john@gmail.com', '$2y$12$7p.TDxfSnfb0urIKsTJEiOGVP3Is9PYSof3BuUebYHv7/Ytmxukm2', 'download (1).jpg', '', '', 'approved', '2020-12-30'),
 (4, 'cus_IfKsR5lD0VJ5Zk', 'james13', 'James', 'Rollins', 'james@gmail.com', '$2y$12$Ty275THcKi.louXDelK5ROabmqJLNEO4.PleoJBbgvw8hvJhN3ybu', '', '', '', 'approved', '2020-12-30'),
 (5, 'cus_IfeSNCc0xKSOqa', 'Lizzy110', 'Lizzy', 'Bennet', 'liz@gmail.com', '$2y$12$kvvZXgRBDNPluv6yu.YktufV01Bfd/BD2X7dE2Kl5f6B.bfCYp79y', 'christopher-campbell-rDEOVtE7vOs-unsplash.jpg', '', '', 'approved', '2020-12-31'),
 (8, 'cus_IkDTn94kqMAT0w', 'darcy001', 'Fitzwilliam', 'Darcy', 'darcy@gmail.com', '$2y$12$pHdgcRSmxJ0ks1pn2AVdneVoSoDx5e5yHEo2X75JZse1W.aSEwfpS', 'jonny-neuenhagen-49e5-juD4co-unsplash.jpg', '', '', 'approved', '2021-01-12'),

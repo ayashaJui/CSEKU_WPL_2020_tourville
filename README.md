@@ -34,6 +34,7 @@ It connects three types of users through dedicated, role-based portals:
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)
+- [Demo accounts](#demo-accounts)
 - [Database](#database)
 - [Notes](#notes)
 - [Authors](#authors)
@@ -121,6 +122,20 @@ tourville/
 
 ## Getting Started
 
+### Quick Start
+
+```bash
+# 1. Place this folder in your web server root (e.g. htdocs/tourville), then:
+composer install                                    # install PHP dependencies
+mysql -u root -p -e "CREATE DATABASE tourism_db;"
+mysql -u root -p tourism_db < database/tourism_db.sql
+copy config\api_key.example.php config\api_key.php  # then paste your own Stripe test keys
+
+# 2. Open http://localhost/tourville/ and log in with a demo account below.
+```
+
+Detailed steps follow.
+
 ### Prerequisites
 
 | Requirement | Version |
@@ -205,14 +220,23 @@ Start Apache and MySQL, then open:
 http://localhost/tourville/
 ```
 
-### Seeded admin account
+### Demo accounts
 
-| Field | Value |
-| :--- | :--- |
-| Email | `admin@gmail.com` |
+The database dump ships ready-to-use accounts (all already `approved`):
 
-Passwords are stored as bcrypt hashes. Use the registration flow or admin panel to
-create accounts you control.
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| Administrator | `admin@gmail.com` | `admin123` |
+| Agency (owner) | `george@gmail.com` | `123456` |
+| Tourist | `john@gmail.com` | `123456` |
+
+- **Admins cannot self-register.** An admin only exists via this seed, or when an
+  existing admin adds one (Admin → Admins → Add Admin).
+- **Agency login:** choose role **Owner** on the login page.
+- Passwords are bcrypt hashes — change them for any real deployment.
+- The seeded tourist's stored Stripe customer belongs to the original (now deleted)
+  Stripe account, so to actually make a payment, **register a new tourist** using
+  your own Stripe test keys.
 
 ## Database
 
